@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
+#    By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 11:59:35 by bebrandt          #+#    #+#              #
-#    Updated: 2024/03/18 10:47:35 by bebrandt         ###   ########.fr        #
+#    Updated: 2024/03/18 17:36:30 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	philo_bonus
-SRCS		=	$(addsuffix .c, philo_bonus)
+SRCS		=	$(addsuffix .c, philo_bonus ft_atoi)
 OBJ 		= $(SRCS:.c=.o)
 OBJS 	= $(addprefix $(OBJ_DIR),$(OBJ))
 

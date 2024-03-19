@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:10 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/18 19:07:44 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:54:04 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	main(int argc, char **argv)
 {
 	t_philosophers	*ph;
 	int				i;
+	int				*a;
 
 	(void)argc;
 	ph = (t_philosophers *)malloc(sizeof(t_philosophers));
@@ -27,8 +28,9 @@ int	main(int argc, char **argv)
 	i = 0;
 	while (i < ph->size)
 	{
-		pthread_create(ph->philos + i, NULL, &routine, NULL);
-		sleep(1);
+		a = (int *)malloc(sizeof(int));
+		*a = i + 1;
+		pthread_create(ph->philos + i, NULL, &routine, a);
 		i++;
 	}
 	i = 0;
@@ -41,11 +43,9 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-void	*routine()
+void	*routine(void *num)
 {
-	static int		count;
-
-	printf("Hello, I'm the %d philosoper\n", ++count);
+	printf("Hello, I'm the %d philosoper\n", *((int *)num));
 	// printf("Hello, I'm philo number %d\n", ft_philo_number(ph->philos, ));
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:10 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/19 15:54:04 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/19 18:25:43 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,44 @@
 
 int	main(int argc, char **argv)
 {
-	t_philosophers	*ph;
-	int				i;
-	int				*a;
+	(void)argv;
+	if (argc == 5)
+	{
+		if (args_are_wrong(argc, argv))
+			return (1);
+		printf("argument without limitation of eating\n");
+	}
+	else if (argc == 6)
+	{
+		if (args_are_wrong(argc, argv))
+			return (1);
+		printf("argument eating limitation\n");
+	}
+	else
+		printf("Error: wrong number of argument.\n");
+}
 
-	(void)argc;
-	ph = (t_philosophers *)malloc(sizeof(t_philosophers));
-	ph->size = ft_atoi(argv[1]);
-	printf("number of philosopher: %d\n", ph->size);
-	ph->philos = (pthread_t *)malloc(sizeof(pthread_t) * (ph->size));
-	if (!ph->philos)
-		return (1);
-	i = 0;
-	while (i < ph->size)
+int	args_are_wrong(int argc, char **argv)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	while (i < argc)
 	{
-		a = (int *)malloc(sizeof(int));
-		*a = i + 1;
-		pthread_create(ph->philos + i, NULL, &routine, a);
+		j = 0;
+		while (argv[i][j])
+		{
+			if (!ft_isdigit(argv[i][j]))
+			{
+				printf("Error: (%s) Wrong format.", argv[i]);
+				printf(" Argument has to be numbers\n");
+				return (1);
+			}
+			j++;
+		}
 		i++;
 	}
-	i = 0;
-	while (i < ph->size)
-	{
-		pthread_join((ph->philos)[i], NULL);
-		i++;
-	}
-	free(ph->philos);
 	return (0);
 }
 
@@ -48,18 +60,4 @@ void	*routine(void *num)
 	printf("Hello, I'm the %d philosoper\n", *((int *)num));
 	// printf("Hello, I'm philo number %d\n", ft_philo_number(ph->philos, ));
 	return (NULL);
-}
-
-int	ft_philo_number(pthread_t *philos, pthread_t philo, int size)
-{
-	int	i;
-
-	i = 0;
-	while (i < size)
-	{
-		if ((philos + i) == &philo)
-			return (i + 1);
-		i++;
-	}
-	return (0);
 }

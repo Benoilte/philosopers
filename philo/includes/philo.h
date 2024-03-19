@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/19 15:53:19 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/19 18:14:25 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,15 @@ typedef struct	s_philosopher
 
 // philo.c
 
+int		args_are_wrong(int argc, char **argv);
 void	*routine(void *num);
 
 // ft_atoi.c
 
 int		ft_atoi(const char *str);
+
+// ft_isdigit.c
+
+int		ft_isdigit(int c);
 
 #endif

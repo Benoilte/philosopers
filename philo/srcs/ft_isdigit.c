@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_bonus.h                                      :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 10:31:22 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/19 18:11:44 by bebrandt         ###   ########.fr       */
+/*   Created: 2024/03/19 18:09:19 by bebrandt          #+#    #+#             */
+/*   Updated: 2024/03/19 18:13:36 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_BONUS_H
-# define PHILO_BONUS_H
+#include "philo.h"
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <pthread.h>
+/*
+Return non-zero value if 'c' is in 0-9
+*/
+int	ft_isdigit(int c)
+{
+	return (c >= '0' && c <= '9');
+}
 
-// ft_atoi.c
-
-int	ft_atoi(const char *str);
-
-// ft_isdigit.c
-
-int	ft_isdigit(int c);
-
-#endif

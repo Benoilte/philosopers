@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:22 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/19 18:30:45 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/19 21:35:42 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <sys/time.h>
 
 // philo_bonus.c
 

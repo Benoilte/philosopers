@@ -6,12 +6,12 @@
 #    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 11:59:35 by bebrandt          #+#    #+#              #
-#    Updated: 2024/03/19 15:48:52 by bebrandt         ###   ########.fr        #
+#    Updated: 2024/03/19 18:11:59 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	philo
-SRCS		=	$(addsuffix .c, philo ft_atoi)
+SRCS		=	$(addsuffix .c, philo ft_atoi ft_isdigit)
 OBJ 		= $(SRCS:.c=.o)
 OBJS 	= $(addprefix $(OBJ_DIR),$(OBJ))
 

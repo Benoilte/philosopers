@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:10 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/20 00:54:16 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/20 21:28:48 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ void	create_thread(t_shared_var *shared, pthread_t *th, int i)
 	if (philo)
 	{
 		philo->id = i;
-		philo->state = 0;
+		philo->n_philo = ft_atoi((shared->argv)[1]);
+		philo->state = WANT_TO_EAT;
 		philo->still_alive = 1;
 		gettimeofday(&(philo->state_change), NULL);
 		gettimeofday(&(philo->last_meal), NULL);
@@ -119,21 +120,4 @@ int	wait_thread_ending(pthread_t *th, char **argv)
 		i++;
 	}
 	return (exit_code);
-}
-
-void	clean(pthread_t *th, t_shared_var *shared)
-{
-	free(th);
-	free(shared->all_alive);
-	free(shared->forks);
-	free(shared->meals);
-	free(shared);
-	pthread_mutex_destroy(&(shared->mutex));
-}
-
-void	*routine(void *philo)
-{
-	printf("Hello, let's start the routine\n");
-	free(philo);
-	return (NULL);
 }

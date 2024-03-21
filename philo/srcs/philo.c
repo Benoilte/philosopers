@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:10 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/20 21:28:48 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/21 10:18:29 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	main(int argc, char **argv)
 {
 	int	exit_code;
 
-	(void)argv;
+	exit_code = 0;
 	if (argc == 5 || argc == 6)
 	{
 		if (args_are_wrong(argc, argv))

@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:20:59 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/20 21:55:03 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:13:55 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,29 +17,37 @@ void	ft_eat(t_philo *philo)
 	while (philo->state == WANT_TO_EAT)
 	{
 		move_forks(philo);
-		usleep(1000000);
 	}
-	pthread_mutex_lock(&(philo->shared->mutex));
-	printf("timestamp_in_ms %d is eating\n", philo->id + 1);
-	pthread_mutex_unlock(&(philo->shared->mutex));
-	usleep(ft_atoi((philo->shared->argv)[2]) * 1000);
+	gettimeofday(&(philo->last_meal), NULL);
+	print_log(philo, "is eating");
+	(philo->shared->meals)[philo->id] += 1;
+	usleep(philo->time_to_eat * 1000);
 	philo->state = WANT_TO_SLEEP;
+	gettimeofday(&(philo->state_change), NULL);
 	move_forks(philo);
-	usleep(1000000);
 }
 
 void	ft_sleep(t_philo *philo)
 {
-	pthread_mutex_lock(&(philo->shared->mutex));
-	printf("timestamp_in_ms %d is sleeping\n", philo->id + 1);
-	pthread_mutex_unlock(&(philo->shared->mutex));
+	print_log(philo, "is sleeping");
+	usleep(philo->time_to_sleep * 1000);
 	philo->state = WANT_TO_THINK;
+	gettimeofday(&(philo->state_change), NULL);
 }
 
 void	ft_think(t_philo *philo)
 {
-	pthread_mutex_lock(&(philo->shared->mutex));
-	printf("timestamp_in_ms %d is thinking\n", philo->id + 1);
-	pthread_mutex_unlock(&(philo->shared->mutex));
+	print_log(philo, "is thinking");
 	philo->state = WANT_TO_EAT;
+	gettimeofday(&(philo->state_change), NULL);
+}
+
+size_t	time_diff(struct timeval *start, struct timeval *end)
+{
+	size_t	sec;
+	size_t	usec;
+
+	sec = (end->tv_sec - start->tv_sec) * 1000;
+	usec = (end->tv_usec - start->tv_usec) / 1000;
+	return (sec + usec);
 }

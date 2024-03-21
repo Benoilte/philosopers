@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/20 20:49:45 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/21 10:33:08 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,12 @@ void				ft_eat(t_philo *philo);
 void				ft_sleep(t_philo *philo);
 void				ft_think(t_philo *philo);
 
-// state.c
+// state_utils.c
 
 void				move_forks(t_philo *philo);
 void				take_forks(t_philo *philo);
 void				return_forks(t_philo *philo);
+int					other_must_eat_first(int philo_id, int *meals, int n_philo);
 
 // ft_atoi.c
 

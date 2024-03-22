@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 17:33:53 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 23:19:05 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ int					wait_thread_end(pthread_t *th, pthread_t monitor,
 
 t_data				*new_data(int argc, char **argv);
 int					init_data(t_data *shared, int n_philo);
+void				fill_data_ptr(t_data *shared);
 void				init_philo(t_philo *philo, t_data *shared, int i);
-
 
 // monitor.c
 

@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 12:03:01 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 16:55:27 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 23:10:32 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	meals_limit_is_reached(t_data *shared)
 			return (0);
 		i++;
 	}
-
 	return (1);
 }
 

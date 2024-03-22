@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 14:09:37 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 14:43:42 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ size_t				ft_time(struct timeval *time);
 void				move_forks(t_philo *philo);
 void				take_forks(t_philo *philo);
 void				return_forks(t_philo *philo);
-int					other_must_eat_first(int philo_id, int *meals, int n_philo);
+int					other_must_eat_first(t_philo *philo);
 
 // ft_atoi.c
 

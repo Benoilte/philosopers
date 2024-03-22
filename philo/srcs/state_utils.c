@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 20:32:48 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 14:12:28 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 14:44:53 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 void	move_forks(t_philo *philo)
 {
-	if (philo->state == WANT_TO_EAT
-		&& other_must_eat_first(philo->id,
-			philo->shared->meals, philo->shared->n_philo))
+	if (philo->state == WANT_TO_EAT && other_must_eat_first(philo))
 		return ;
 	pthread_mutex_lock(&(philo->shared->m_forks));
 	if (philo->state == WANT_TO_EAT)
@@ -26,14 +24,15 @@ void	move_forks(t_philo *philo)
 	pthread_mutex_unlock(&(philo->shared->m_forks));
 }
 
-int	other_must_eat_first(int philo_id, int *meals, int n_philo)
+int	other_must_eat_first(t_philo *philo)
 {
 	int	i;
 
 	i = 0;
-	while (i < n_philo)
+	while (i < philo->shared->n_philo)
 	{
-		if (meals[philo_id] > meals[i])
+		if ((philo->shared->last_meal)[philo->id]
+			> (philo->shared->last_meal)[i])
 			return (1);
 		i++;
 	}

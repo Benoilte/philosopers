@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:20:59 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 13:08:38 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 14:31:04 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,17 @@
 
 void	ft_eat(t_philo *philo)
 {
-	while (philo->state == WANT_TO_EAT)
+	if (philo->shared->run_simulation == 0)
+		return ;
+	while (philo->state == WANT_TO_EAT && *(philo->shared->run_simulation))
 	{
 		move_forks(philo);
 	}
 	gettimeofday(&(philo->last_meal), NULL);
-	print_log(philo, "is eating");
+	(philo->shared->last_meal)[philo->id] = ft_time(&(philo->last_meal));
+	if (philo->shared->run_simulation == 0)
+		return ;
+	print_log(philo->id, philo->shared, "is eating");
 	(philo->shared->meals)[philo->id] += 1;
 	usleep((philo->shared->time_to_eat) * 1000);
 	philo->state = WANT_TO_SLEEP;
@@ -29,7 +34,9 @@ void	ft_eat(t_philo *philo)
 
 void	ft_sleep(t_philo *philo)
 {
-	print_log(philo, "is sleeping");
+	if (philo->shared->run_simulation == 0)
+		return ;
+	print_log(philo->id, philo->shared, "is sleeping");
 	usleep((philo->shared->time_to_sleep) * 1000);
 	philo->state = WANT_TO_THINK;
 	gettimeofday(&(philo->state_change), NULL);
@@ -37,19 +44,19 @@ void	ft_sleep(t_philo *philo)
 
 void	ft_think(t_philo *philo)
 {
-	print_log(philo, "is thinking");
+	if (philo->shared->run_simulation == 0)
+		return ;
+	print_log(philo->id, philo->shared, "is thinking");
 	philo->state = WANT_TO_EAT;
 	gettimeofday(&(philo->state_change), NULL);
 }
 
-size_t	time_diff(struct timeval *start, struct timeval *end)
+size_t	timestamp(struct timeval *start)
 {
-	// size_t	sec;
-	// size_t	usec;
+	struct timeval	now;
 
-	// sec = (end->tv_sec - start->tv_sec) * 1000;
-	// usec = (end->tv_usec - start->tv_usec) / 1000;
-	return (ft_time(end) - ft_time(start));
+	gettimeofday(&now, NULL);
+	return (ft_time(&now) - ft_time(start));
 }
 
 size_t	ft_time(struct timeval *time)

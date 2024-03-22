@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:10 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 13:11:05 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 13:25:39 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	start_simulation(int argc, char **argv)
 		return (exit_code);
 	}
 	start_routine(shared, th);
-	exit_code = wait_thread_ending(th, argv);
+	exit_code = wait_thread_end(th, monitor, shared);
 	clean(th, shared);
 	return (exit_code);
 }

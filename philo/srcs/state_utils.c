@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 20:32:48 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 12:21:38 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 14:12:28 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	other_must_eat_first(int philo_id, int *meals, int n_philo)
 
 void	take_forks(t_philo *philo)
 {
+	if (philo->shared->n_philo == 1)
+		return ;
 	if (philo->id == 0)
 	{
 		if ((philo->shared->forks)[philo->id]
@@ -50,9 +52,9 @@ void	take_forks(t_philo *philo)
 			philo->state = READY_TO_EAT;
 			gettimeofday(&(philo->state_change), NULL);
 			(philo->shared->forks)[philo->id] = 0;
-			print_log(philo, "has taken a fork");
+			print_log(philo->id, philo->shared, "has taken a fork");
 			(philo->shared->forks)[philo->shared->n_philo - 1] = 0;
-			print_log(philo, "has taken a fork");
+			print_log(philo->id, philo->shared, "has taken a fork");
 		}
 	}
 	else
@@ -63,9 +65,9 @@ void	take_forks(t_philo *philo)
 			philo->state = READY_TO_EAT;
 			gettimeofday(&(philo->state_change), NULL);
 			(philo->shared->forks)[philo->id] = 0;
-			print_log(philo, "has taken a fork");
+			print_log(philo->id, philo->shared, "has taken a fork");
 			(philo->shared->forks)[philo->id - 1] = 0;
-			print_log(philo, "has taken a fork");
+			print_log(philo->id, philo->shared, "has taken a fork");
 		}
 	}
 }

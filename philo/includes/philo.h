@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 13:11:57 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 14:09:37 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_data
 	int				*forks;
 	int				*meals;
 	int				*run_simulation;
+	size_t			*last_meal;
 	struct timeval	start;
 	pthread_mutex_t	m_write;
 	pthread_mutex_t	m_forks;
@@ -62,9 +63,10 @@ void				start_routine(t_data *shared, pthread_t *th);
 // philo_utils.c
 
 void				*routine(void *num);
-void				print_log(t_philo *philo, char *msg);
+void				print_log(int id, t_data *shared, char *msg);
 void				clean(pthread_t *th, t_data *shared);
-int					wait_thread_ending(pthread_t *th, char **argv);
+int					wait_thread_end(pthread_t *th, pthread_t monitor,
+						t_data *shared);
 
 // init.c
 
@@ -84,7 +86,7 @@ int					one_philo_is_die(t_data *shared);
 void				ft_eat(t_philo *philo);
 void				ft_sleep(t_philo *philo);
 void				ft_think(t_philo *philo);
-size_t				time_diff(struct timeval *start, struct timeval *end);
+size_t				timestamp(struct timeval *start);
 size_t				ft_time(struct timeval *time);
 
 // state_utils.c

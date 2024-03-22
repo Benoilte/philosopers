@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 23:47:13 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 13:11:28 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 13:42:21 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_data	*new_data(int argc, char **argv)
 	shared->time_to_die = ft_atoi(argv[2]);
 	shared->time_to_eat = ft_atoi(argv[3]);
 	shared->time_to_sleep = ft_atoi(argv[4]);
+	gettimeofday(&(shared->start), NULL);
 	if (argc == 6)
 		shared->meals_limit = ft_atoi(argv[5]);
 	else
@@ -32,7 +33,6 @@ t_data	*new_data(int argc, char **argv)
 		free(shared);
 		return (NULL);
 	}
-	gettimeofday(&(shared->start), NULL);
 	pthread_mutex_init(&(shared->m_write), NULL);
 	pthread_mutex_init(&(shared->m_forks), NULL);
 	pthread_mutex_init(&(shared->m_meal), NULL);
@@ -50,17 +50,26 @@ int	init_data(t_data *shared, int n_philo)
 		free(shared->forks);
 		return (0);
 	}
+	shared->last_meal = (size_t *)malloc(sizeof(size_t) * n_philo);
+	if (!shared->last_meal)
+	{
+		free(shared->forks);
+		free(shared->meals);
+		return (0);
+	}
 	shared->run_simulation = (int *)malloc(sizeof(int));
 	if (!shared->run_simulation)
 	{
 		free(shared->forks);
 		free(shared->meals);
+		free(shared->last_meal);
 		return (0);
 	}
 	while (--n_philo >= 0)
 	{
 		shared->forks[n_philo] = 1;
 		shared->meals[n_philo] = 0;
+		shared->last_meal[n_philo] = ft_time(&(shared->start));
 	}
 	*(shared->run_simulation) = 1;
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 12:03:01 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 12:39:35 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 14:23:52 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,19 @@ int	meals_limit_is_reached(t_data *shared)
 
 int	one_philo_is_die(t_data *shared)
 {
-	(void)shared;
+	int				i;
+	struct timeval	now;
+
+	i = 0;
+	while (i < shared->n_philo)
+	{
+		gettimeofday(&now, NULL);
+		if ((ft_time(&now) - (shared->last_meal)[i]) > (size_t)(shared->time_to_die))
+		{
+			print_log(i, shared, "died");
+			return (1);
+		}
+		i++;
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:01:10 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 14:22:47 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 16:47:52 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,13 @@ void	*routine(void *philo)
 	return (NULL);
 }
 
-void	print_log(int id, t_data *shared, char *msg)
+void	print_log(int id, t_data *shared, char *msg, int msg_is_died)
 {
 	pthread_mutex_lock(&(shared->m_write));
 	if (*(shared->run_simulation))
 		printf("%zu %d %s\n", timestamp(&(shared->start)), id + 1, msg);
+	if (msg_is_died)
+		*(shared->run_simulation) = 0;
 	pthread_mutex_unlock(&(shared->m_write));
 }
 

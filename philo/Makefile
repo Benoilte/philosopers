@@ -6,12 +6,12 @@
 #    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 11:59:35 by bebrandt          #+#    #+#              #
-#    Updated: 2024/03/22 12:36:09 by bebrandt         ###   ########.fr        #
+#    Updated: 2024/03/22 17:23:59 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	philo
-SRCS		=	$(addsuffix .c, philo philo_utils init monitor state state_utils ft_atoi ft_isdigit)
+SRCS		=	$(addsuffix .c, philo philo_utils init monitor state state_utils ft_atoi)
 OBJ 		= $(SRCS:.c=.o)
 OBJS 	= $(addprefix $(OBJ_DIR),$(OBJ))
 

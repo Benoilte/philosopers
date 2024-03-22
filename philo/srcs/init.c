@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 23:47:13 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 13:42:21 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 23:20:32 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_data	*new_data(int argc, char **argv)
 		free(shared);
 		return (NULL);
 	}
+	fill_data_ptr(shared);
 	pthread_mutex_init(&(shared->m_write), NULL);
 	pthread_mutex_init(&(shared->m_forks), NULL);
 	pthread_mutex_init(&(shared->m_meal), NULL);
@@ -65,22 +66,28 @@ int	init_data(t_data *shared, int n_philo)
 		free(shared->last_meal);
 		return (0);
 	}
-	while (--n_philo >= 0)
+	return (1);
+}
+
+void	fill_data_ptr(t_data *shared)
+{
+	int	i;
+
+	i = 0;
+	while (i < shared->n_philo)
 	{
-		shared->forks[n_philo] = 1;
-		shared->meals[n_philo] = 0;
-		shared->last_meal[n_philo] = ft_time(&(shared->start));
+		shared->forks[i] = 1;
+		shared->meals[i] = 0;
+		shared->last_meal[i] = ft_time(&(shared->start));
+		i++;
 	}
 	*(shared->run_simulation) = 1;
-	return (1);
 }
 
 void	init_philo(t_philo *philo, t_data *shared, int i)
 {
 	philo->id = i;
 	philo->state = WANT_TO_EAT;
-	philo->still_alive = 1;
-	gettimeofday(&(philo->state_change), NULL);
 	gettimeofday(&(philo->last_meal), NULL);
 	philo->shared = shared;
 }

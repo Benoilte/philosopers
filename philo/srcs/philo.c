@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:10 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/21 14:36:18 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 13:11:05 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,45 +59,52 @@ int	arg_format_is_wrong(int argc, char **argv)
 
 int	start_simulation(int argc, char **argv)
 {
-	t_shared_var	*shared;
+	t_data			*shared;
 	pthread_t		*th;
-	int				i;
+	pthread_t		monitor;
 	int				exit_code;
 
 	exit_code = 0;
-	th = (pthread_t *)malloc(sizeof(pthread_t) * ft_atoi(argv[1]));
-	if (!th)
-		return (1);
-	shared = new_shared_variable(argc, argv);
+	shared = new_data(argc, argv);
 	if (!shared)
+		return (1);
+	th = (pthread_t *)malloc(sizeof(pthread_t) * shared->n_philo);
+	if (!th)
 	{
-		free(th);
+		clean(NULL, shared);
 		return (1);
 	}
-	i = 0;
-	while (i < ft_atoi(argv[1]))
+	if (pthread_create(&monitor, NULL, &control_simulation, shared) != 0)
 	{
-		create_thread(shared, th, i);
-		i++;
+		printf("Error: Failed to create monitor\n");
+		clean(th, shared);
+		return (exit_code);
 	}
+	start_routine(shared, th);
 	exit_code = wait_thread_ending(th, argv);
 	clean(th, shared);
 	return (exit_code);
 }
 
-void	create_thread(t_shared_var *shared, pthread_t *th, int i)
+void	start_routine(t_data *shared, pthread_t *th)
 {
 	t_philo			*philo;
+	int				i;
 
-	philo = (t_philo *)malloc(sizeof(t_philo));
-	if (philo)
+	i = 0;
+	while (i < shared->n_philo)
 	{
-		init_philo(philo, shared, i);
-		if (pthread_create(th + i, NULL, &routine, philo) != 0)
+		philo = (t_philo *)malloc(sizeof(t_philo));
+		if (philo)
 		{
-			printf("Error: Failed to create thread number %d\n", i);
+			init_philo(philo, shared, i);
+			if (pthread_create(th + i, NULL, &routine, philo) != 0)
+			{
+				printf("Error: Failed to create philosopher number %d\n", i);
+			}
 		}
+		else
+			*(shared->run_simulation) = 0;
+		i++;
 	}
-	else
-		*(shared->run_simulation) = 0;
 }

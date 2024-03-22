@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:01:10 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/21 15:08:58 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 12:39:56 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*routine(void *philo)
 {
-	while (((t_philo *)philo)->shared->run_simulation)
+	while (*(((t_philo *)philo)->shared->run_simulation))
 	{
 		ft_eat((t_philo *)philo);
 		ft_sleep((t_philo *)philo);
@@ -36,16 +36,20 @@ void	print_log(t_philo *philo, char *msg)
 	pthread_mutex_unlock(&(philo->shared->m_write));
 }
 
-void	clean(pthread_t *th, t_shared_var *shared)
+void	clean(pthread_t *th, t_data *shared)
 {
-	free(th);
-	free(shared->run_simulation);
-	free(shared->forks);
-	free(shared->meals);
-	free(shared);
-	pthread_mutex_destroy(&(shared->m_write));
-	pthread_mutex_destroy(&(shared->m_forks));
-	pthread_mutex_destroy(&(shared->m_meal));
+	if (th)
+		free(th);
+	if (shared)
+	{
+		free(shared->run_simulation);
+		free(shared->forks);
+		free(shared->meals);
+		pthread_mutex_destroy(&(shared->m_write));
+		pthread_mutex_destroy(&(shared->m_forks));
+		pthread_mutex_destroy(&(shared->m_meal));
+		free(shared);
+	}
 }
 
 int	wait_thread_ending(pthread_t *th, char **argv)

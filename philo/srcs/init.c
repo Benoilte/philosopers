@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 23:47:13 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 13:42:21 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 17:33:30 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,6 @@ void	init_philo(t_philo *philo, t_data *shared, int i)
 {
 	philo->id = i;
 	philo->state = WANT_TO_EAT;
-	philo->still_alive = 1;
-	gettimeofday(&(philo->state_change), NULL);
 	gettimeofday(&(philo->last_meal), NULL);
 	philo->shared = shared;
 }

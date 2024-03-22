@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 20:32:48 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 17:10:12 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 17:36:14 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,14 @@ void	move_forks(t_philo *philo)
 
 int	other_must_eat_first(t_philo *philo)
 {
-	int	i;
+	int		i;
+	size_t	*last_meal;
 
+	last_meal = philo->shared->last_meal;
 	i = 0;
 	while (i < philo->shared->n_philo)
 	{
-		if ((philo->shared->last_meal)[philo->id]
-			> (philo->shared->last_meal)[i])
+		if (last_meal[philo->id] > last_meal[i])
 			return (1);
 		i++;
 	}
@@ -61,7 +62,6 @@ void	is_forks_available(t_philo *philo)
 void	take_forks(t_philo *philo, int right_fork, int left_fork)
 {
 	philo->state = READY_TO_EAT;
-	gettimeofday(&(philo->state_change), NULL);
 	(philo->shared->forks)[left_fork] = 0;
 	print_log(philo->id, philo->shared, "has taken a fork", 0);
 	(philo->shared->forks)[right_fork] = 0;

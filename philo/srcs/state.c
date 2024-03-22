@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:20:59 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 16:48:16 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 17:31:57 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,14 @@ void	ft_eat(t_philo *philo)
 	{
 		move_forks(philo);
 	}
-	gettimeofday(&(philo->last_meal), NULL);
-	(philo->shared->last_meal)[philo->id] = ft_time(&(philo->last_meal));
 	if (philo->shared->run_simulation == 0)
 		return ;
-	print_log(philo->id, philo->shared, "is eating", 0);
+	gettimeofday(&(philo->last_meal), NULL);
+	(philo->shared->last_meal)[philo->id] = ft_time(&(philo->last_meal));
 	(philo->shared->meals)[philo->id] += 1;
+	print_log(philo->id, philo->shared, "is eating", 0);
 	usleep((philo->shared->time_to_eat) * 1000);
 	philo->state = WANT_TO_SLEEP;
-	gettimeofday(&(philo->state_change), NULL);
 	move_forks(philo);
 }
 
@@ -39,7 +38,6 @@ void	ft_sleep(t_philo *philo)
 	print_log(philo->id, philo->shared, "is sleeping", 0);
 	usleep((philo->shared->time_to_sleep) * 1000);
 	philo->state = WANT_TO_THINK;
-	gettimeofday(&(philo->state_change), NULL);
 }
 
 void	ft_think(t_philo *philo)
@@ -48,7 +46,6 @@ void	ft_think(t_philo *philo)
 		return ;
 	print_log(philo->id, philo->shared, "is thinking", 0);
 	philo->state = WANT_TO_EAT;
-	gettimeofday(&(philo->state_change), NULL);
 }
 
 size_t	timestamp(struct timeval *start)

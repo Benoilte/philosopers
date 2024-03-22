@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 17:06:43 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 17:33:53 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ typedef struct s_philo
 {
 	int				id;
 	int				state;
-	int				still_alive;
-	struct timeval	state_change;
 	struct timeval	last_meal;
 	t_data			*shared;
 }					t_philo;

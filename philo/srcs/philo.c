@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:10 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 13:25:39 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 17:25:36 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	arg_format_is_wrong(int argc, char **argv)
 		j = 0;
 		while (argv[i][j])
 		{
-			if (!ft_isdigit(argv[i][j]))
+			if (!(argv[i][j] >= '0' && argv[i][j] <= '9'))
 			{
 				printf("Error: (%s) Format.", argv[i]);
 				printf(" Argument has to be numbers\n");
@@ -101,6 +101,7 @@ void	start_routine(t_data *shared, pthread_t *th)
 			if (pthread_create(th + i, NULL, &routine, philo) != 0)
 			{
 				printf("Error: Failed to create philosopher number %d\n", i);
+				*(shared->run_simulation) = 0;
 			}
 		}
 		else

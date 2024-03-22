@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/21 15:04:14 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 13:11:57 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,13 @@ enum
 	WANT_TO_THINK
 };
 
-typedef struct s_shared_var
+typedef struct s_data
 {
-	char			**argv;
-	int				argc;
+	int				n_philo;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				meals_limit;
 	int				*forks;
 	int				*meals;
 	int				*run_simulation;
@@ -38,41 +41,43 @@ typedef struct s_shared_var
 	pthread_mutex_t	m_write;
 	pthread_mutex_t	m_forks;
 	pthread_mutex_t	m_meal;
-}					t_shared_var;
+}					t_data;
 
 typedef struct s_philo
 {
 	int				id;
-	int				n_philo;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				meals_limit;
 	int				state;
 	int				still_alive;
 	struct timeval	state_change;
 	struct timeval	last_meal;
-	t_shared_var	*shared;
+	t_data			*shared;
 }					t_philo;
 
 // philo.c
 
 int					arg_format_is_wrong(int argc, char **argv);
 int					start_simulation(int argc, char **argv);
-void				create_thread(t_shared_var *shared, pthread_t *th, int i);
-void				init_philo(t_philo *philo, t_shared_var *shared, int i);
+void				start_routine(t_data *shared, pthread_t *th);
 
 // philo_utils.c
 
 void				*routine(void *num);
 void				print_log(t_philo *philo, char *msg);
-void				clean(pthread_t *th, t_shared_var *shared);
+void				clean(pthread_t *th, t_data *shared);
 int					wait_thread_ending(pthread_t *th, char **argv);
 
 // init.c
 
-t_shared_var		*new_shared_variable(int argc, char **argv);
-int					init_shared_variable(t_shared_var *shared, int n_philo);
+t_data				*new_data(int argc, char **argv);
+int					init_data(t_data *shared, int n_philo);
+void				init_philo(t_philo *philo, t_data *shared, int i);
+
+
+// monitor.c
+
+void				*control_simulation(void *data);
+int					meals_limit_is_reached(t_data *shared);
+int					one_philo_is_die(t_data *shared);
 
 // state.c
 
@@ -80,6 +85,7 @@ void				ft_eat(t_philo *philo);
 void				ft_sleep(t_philo *philo);
 void				ft_think(t_philo *philo);
 size_t				time_diff(struct timeval *start, struct timeval *end);
+size_t				ft_time(struct timeval *time);
 
 // state_utils.c
 

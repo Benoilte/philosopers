@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:20:59 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 14:31:04 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 16:48:16 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_eat(t_philo *philo)
 	(philo->shared->last_meal)[philo->id] = ft_time(&(philo->last_meal));
 	if (philo->shared->run_simulation == 0)
 		return ;
-	print_log(philo->id, philo->shared, "is eating");
+	print_log(philo->id, philo->shared, "is eating", 0);
 	(philo->shared->meals)[philo->id] += 1;
 	usleep((philo->shared->time_to_eat) * 1000);
 	philo->state = WANT_TO_SLEEP;
@@ -36,7 +36,7 @@ void	ft_sleep(t_philo *philo)
 {
 	if (philo->shared->run_simulation == 0)
 		return ;
-	print_log(philo->id, philo->shared, "is sleeping");
+	print_log(philo->id, philo->shared, "is sleeping", 0);
 	usleep((philo->shared->time_to_sleep) * 1000);
 	philo->state = WANT_TO_THINK;
 	gettimeofday(&(philo->state_change), NULL);
@@ -46,7 +46,7 @@ void	ft_think(t_philo *philo)
 {
 	if (philo->shared->run_simulation == 0)
 		return ;
-	print_log(philo->id, philo->shared, "is thinking");
+	print_log(philo->id, philo->shared, "is thinking", 0);
 	philo->state = WANT_TO_EAT;
 	gettimeofday(&(philo->state_change), NULL);
 }

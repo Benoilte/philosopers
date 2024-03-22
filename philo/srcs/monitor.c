@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 12:03:01 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 14:23:52 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 16:55:27 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ void	*control_simulation(void *data)
 	{
 		if (meals_limit_is_reached(shared))
 			*(shared->run_simulation) = 0;
-		if (one_philo_is_die(shared))
-			*(shared->run_simulation) = 0;
+		is_one_philosopher_starving(shared);
 	}
 	return (NULL);
 }
@@ -44,7 +43,7 @@ int	meals_limit_is_reached(t_data *shared)
 	return (1);
 }
 
-int	one_philo_is_die(t_data *shared)
+void	is_one_philosopher_starving(t_data *shared)
 {
 	int				i;
 	struct timeval	now;
@@ -53,12 +52,12 @@ int	one_philo_is_die(t_data *shared)
 	while (i < shared->n_philo)
 	{
 		gettimeofday(&now, NULL);
-		if ((ft_time(&now) - (shared->last_meal)[i]) > (size_t)(shared->time_to_die))
+		if ((ft_time(&now) - (shared->last_meal)[i])
+			> (size_t)(shared->time_to_die))
 		{
-			print_log(i, shared, "died");
-			return (1);
+			print_log(i, shared, "died", 1);
+			return ;
 		}
 		i++;
 	}
-	return (0);
 }

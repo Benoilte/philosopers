@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 14:43:42 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/22 17:06:43 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void				start_routine(t_data *shared, pthread_t *th);
 // philo_utils.c
 
 void				*routine(void *num);
-void				print_log(int id, t_data *shared, char *msg);
+void				print_log(int id, t_data *shared, char *msg,
+						int msg_is_died);
 void				clean(pthread_t *th, t_data *shared);
 int					wait_thread_end(pthread_t *th, pthread_t monitor,
 						t_data *shared);
@@ -79,7 +80,7 @@ void				init_philo(t_philo *philo, t_data *shared, int i);
 
 void				*control_simulation(void *data);
 int					meals_limit_is_reached(t_data *shared);
-int					one_philo_is_die(t_data *shared);
+void				is_one_philosopher_starving(t_data *shared);
 
 // state.c
 
@@ -92,9 +93,10 @@ size_t				ft_time(struct timeval *time);
 // state_utils.c
 
 void				move_forks(t_philo *philo);
-void				take_forks(t_philo *philo);
-void				return_forks(t_philo *philo);
 int					other_must_eat_first(t_philo *philo);
+void				is_forks_available(t_philo *philo);
+void				take_forks(t_philo *philo, int right_fork, int left_fork);
+void				return_forks(t_philo *philo);
 
 // ft_atoi.c
 

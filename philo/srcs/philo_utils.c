@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
+/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:01:10 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 16:47:52 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/02 17:08:53 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 
 void	*routine(void *philo)
 {
+	if (!((((t_philo *)philo)->id) % 2))
+	{
+		print_log((((t_philo *)philo)->id), (((t_philo *)philo)->shared), "modify state -> want to sleep", 0);
+		usleep(((t_philo *)philo)->shared->time_to_eat / 2);
+		// ((t_philo *)philo)->state = WANT_TO_SLEEP;
+	}
 	while (*(((t_philo *)philo)->shared->run_simulation))
 	{
 		ft_eat((t_philo *)philo);

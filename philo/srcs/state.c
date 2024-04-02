@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   state.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
+/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:20:59 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 17:31:57 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/02 16:45:01 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_eat(t_philo *philo)
 {
-	if (philo->shared->run_simulation == 0)
+	if (philo->state == WANT_TO_SLEEP)
 		return ;
 	while (philo->state == WANT_TO_EAT && *(philo->shared->run_simulation))
 	{

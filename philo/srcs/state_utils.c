@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   state_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
+/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 20:32:48 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 17:36:14 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/02 14:40:54 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	move_forks(t_philo *philo)
 {
-	if (philo->state == WANT_TO_EAT && other_must_eat_first(philo))
-		return ;
+	// if (philo->state == WANT_TO_EAT && other_must_eat_first(philo))
+	// 	return ;
 	pthread_mutex_lock(&(philo->shared->m_forks));
 	if (philo->state == WANT_TO_EAT)
 		is_forks_available(philo);

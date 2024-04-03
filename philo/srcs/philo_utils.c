@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 12:01:10 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/02 17:08:53 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/03 10:43:59 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,7 @@
 void	*routine(void *philo)
 {
 	if (!((((t_philo *)philo)->id) % 2))
-	{
-		print_log((((t_philo *)philo)->id), (((t_philo *)philo)->shared), "modify state -> want to sleep", 0);
-		usleep(((t_philo *)philo)->shared->time_to_eat / 2);
-		// ((t_philo *)philo)->state = WANT_TO_SLEEP;
-	}
+		((t_philo *)philo)->state = SLEEP;
 	while (*(((t_philo *)philo)->shared->run_simulation))
 	{
 		ft_eat((t_philo *)philo);
@@ -42,17 +38,23 @@ void	print_log(int id, t_data *shared, char *msg, int msg_is_died)
 
 void	clean(pthread_t *th, t_data *shared)
 {
+	int	i;
+
+	i = 0;
 	if (th)
 		free(th);
 	if (shared)
 	{
 		free(shared->run_simulation);
-		free(shared->forks);
 		free(shared->meals);
 		free(shared->last_meal);
 		pthread_mutex_destroy(&(shared->m_write));
-		pthread_mutex_destroy(&(shared->m_forks));
 		pthread_mutex_destroy(&(shared->m_meal));
+		while (i < shared->n_philo)
+		{
+			pthread_mutex_destroy(shared->m_forks + i);
+			i++;
+		}
 		free(shared);
 	}
 }

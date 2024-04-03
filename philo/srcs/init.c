@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 23:47:13 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 23:20:32 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/03 10:47:42 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,33 +35,32 @@ t_data	*new_data(int argc, char **argv)
 	}
 	fill_data_ptr(shared);
 	pthread_mutex_init(&(shared->m_write), NULL);
-	pthread_mutex_init(&(shared->m_forks), NULL);
 	pthread_mutex_init(&(shared->m_meal), NULL);
 	return (shared);
 }
 
-int	init_data(t_data *shared, int n_philo)
+int	init_data(t_data *shared, int size)
 {
-	shared->forks = (int *)malloc(sizeof(int) * n_philo);
-	if (!shared->forks)
+	shared->m_forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * size);
+	if (!shared->m_forks)
 		return (0);
-	shared->meals = (int *)malloc(sizeof(int) * n_philo);
+	shared->meals = (int *)malloc(sizeof(int) * size);
 	if (!shared->meals)
 	{
-		free(shared->forks);
+		free(shared->m_forks);
 		return (0);
 	}
-	shared->last_meal = (size_t *)malloc(sizeof(size_t) * n_philo);
+	shared->last_meal = (size_t *)malloc(sizeof(size_t) * size);
 	if (!shared->last_meal)
 	{
-		free(shared->forks);
+		free(shared->m_forks);
 		free(shared->meals);
 		return (0);
 	}
 	shared->run_simulation = (int *)malloc(sizeof(int));
 	if (!shared->run_simulation)
 	{
-		free(shared->forks);
+		free(shared->m_forks);
 		free(shared->meals);
 		free(shared->last_meal);
 		return (0);
@@ -76,7 +75,7 @@ void	fill_data_ptr(t_data *shared)
 	i = 0;
 	while (i < shared->n_philo)
 	{
-		shared->forks[i] = 1;
+		pthread_mutex_init(shared->m_forks + i, NULL);
 		shared->meals[i] = 0;
 		shared->last_meal[i] = ft_time(&(shared->start));
 		i++;
@@ -87,7 +86,12 @@ void	fill_data_ptr(t_data *shared)
 void	init_philo(t_philo *philo, t_data *shared, int i)
 {
 	philo->id = i;
-	philo->state = WANT_TO_EAT;
+	philo->left_fork_id = i;
+	if (i == shared->n_philo - 1)
+		philo->right_fork_id = 0;
+	else
+		philo->right_fork_id = i + 1;
+	philo->state = EAT;
 	gettimeofday(&(philo->last_meal), NULL);
 	philo->shared = shared;
 }

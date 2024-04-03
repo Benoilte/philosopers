@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   state_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 20:32:48 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/02 14:40:54 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/03 10:43:36 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	move_forks(t_philo *philo)
-{
-	// if (philo->state == WANT_TO_EAT && other_must_eat_first(philo))
-	// 	return ;
-	pthread_mutex_lock(&(philo->shared->m_forks));
-	if (philo->state == WANT_TO_EAT)
-		is_forks_available(philo);
-	else if (philo->state == WANT_TO_SLEEP)
-		return_forks(philo);
-	pthread_mutex_unlock(&(philo->shared->m_forks));
-}
 
 int	other_must_eat_first(t_philo *philo)
 {
@@ -40,44 +28,16 @@ int	other_must_eat_first(t_philo *philo)
 	return (0);
 }
 
-void	is_forks_available(t_philo *philo)
+void	take_forks(t_philo *philo)
 {
-	int	*forks;
-
-	if (philo->shared->n_philo == 1)
-		return ;
-	forks = philo->shared->forks;
-	if (philo->id == 0)
-	{
-		if (forks[philo->id] && forks[philo->shared->n_philo - 1])
-			take_forks(philo, philo->shared->n_philo - 1, philo->id);
-	}
-	else
-	{
-		if (forks[philo->id] && forks[philo->id - 1])
-			take_forks(philo, philo->id - 1, philo->id);
-	}
-}
-
-void	take_forks(t_philo *philo, int right_fork, int left_fork)
-{
-	philo->state = READY_TO_EAT;
-	(philo->shared->forks)[left_fork] = 0;
+	pthread_mutex_lock(philo->shared->m_forks + philo->left_fork_id);
 	print_log(philo->id, philo->shared, "has taken a fork", 0);
-	(philo->shared->forks)[right_fork] = 0;
+	pthread_mutex_lock(philo->shared->m_forks + philo->right_fork_id);
 	print_log(philo->id, philo->shared, "has taken a fork", 0);
 }
 
 void	return_forks(t_philo *philo)
 {
-	if (philo->id == 0)
-	{
-		(philo->shared->forks)[philo->id] = 1;
-		(philo->shared->forks)[philo->shared->n_philo - 1] = 1;
-	}
-	else
-	{
-		(philo->shared->forks)[philo->id] = 1;
-		(philo->shared->forks)[philo->id - 1] = 1;
-	}
+	pthread_mutex_unlock(philo->shared->m_forks + philo->left_fork_id);
+	pthread_mutex_unlock(philo->shared->m_forks + philo->right_fork_id);
 }

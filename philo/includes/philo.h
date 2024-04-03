@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 23:19:05 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/03 10:48:00 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@
 
 enum
 {
-	WANT_TO_EAT,
-	READY_TO_EAT,
-	WANT_TO_SLEEP,
-	WANT_TO_THINK
+	EAT,
+	SLEEP,
+	THINK
 };
 
 typedef struct s_data
@@ -34,19 +33,20 @@ typedef struct s_data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				meals_limit;
-	int				*forks;
 	int				*meals;
 	int				*run_simulation;
 	size_t			*last_meal;
 	struct timeval	start;
 	pthread_mutex_t	m_write;
-	pthread_mutex_t	m_forks;
+	pthread_mutex_t	*m_forks;
 	pthread_mutex_t	m_meal;
 }					t_data;
 
 typedef struct s_philo
 {
 	int				id;
+	int				left_fork_id;
+	int				right_fork_id;
 	int				state;
 	struct timeval	last_meal;
 	t_data			*shared;
@@ -70,7 +70,7 @@ int					wait_thread_end(pthread_t *th, pthread_t monitor,
 // init.c
 
 t_data				*new_data(int argc, char **argv);
-int					init_data(t_data *shared, int n_philo);
+int					init_data(t_data *shared, int size);
 void				fill_data_ptr(t_data *shared);
 void				init_philo(t_philo *philo, t_data *shared, int i);
 
@@ -85,23 +85,21 @@ void				is_one_philosopher_starving(t_data *shared);
 void				ft_eat(t_philo *philo);
 void				ft_sleep(t_philo *philo);
 void				ft_think(t_philo *philo);
+
+// time.c
+
 size_t				timestamp(struct timeval *start);
 size_t				ft_time(struct timeval *time);
+void				ft_usleep(int ms);
 
 // state_utils.c
 
-void				move_forks(t_philo *philo);
 int					other_must_eat_first(t_philo *philo);
-void				is_forks_available(t_philo *philo);
-void				take_forks(t_philo *philo, int right_fork, int left_fork);
+void				take_forks(t_philo *philo);
 void				return_forks(t_philo *philo);
 
 // ft_atoi.c
 
 int					ft_atoi(const char *str);
-
-// ft_isdigit.c
-
-int					ft_isdigit(int c);
 
 #endif

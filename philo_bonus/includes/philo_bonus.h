@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:22 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/26 17:40:09 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/03/26 18:38:04 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <sys/time.h>
 # include <sys/wait.h>
 # include <semaphore.h>
+# include <fcntl.h>
+// # include <type.h>
 
 enum
 {

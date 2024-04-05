@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 12:03:01 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 23:10:32 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/05 13:58:04 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	*control_simulation(void *data)
 	t_data	*shared;
 
 	shared = (t_data *)data;
+	ft_usleep(shared->time_to_die / 2);
 	while (*(shared->run_simulation))
 	{
 		if (meals_limit_is_reached(shared))
@@ -44,17 +45,20 @@ int	meals_limit_is_reached(t_data *shared)
 
 void	is_one_philosopher_starving(t_data *shared)
 {
-	int				i;
-	struct timeval	now;
+	int		i;
+	size_t	diff;
 
 	i = 0;
 	while (i < shared->n_philo)
 	{
-		gettimeofday(&now, NULL);
-		if ((ft_time(&now) - (shared->last_meal)[i])
-			> (size_t)(shared->time_to_die))
+		pthread_mutex_lock(&(shared->m_last_meal));
+		diff = ft_get_diff(shared->last_meal[i]);
+		pthread_mutex_unlock(&(shared->m_last_meal));
+		if (diff > (size_t)(shared->time_to_die))
 		{
+			printf("%zu diff : %zu\n", timestamp(&(shared->start)),diff);
 			print_log(i, shared, "died", 1);
+			*(shared->run_simulation) = 0;
 			return ;
 		}
 		i++;

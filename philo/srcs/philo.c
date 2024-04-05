@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:10 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/22 17:25:36 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/05 14:24:39 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,34 +78,37 @@ int	start_simulation(int argc, char **argv)
 	{
 		printf("Error: Failed to create monitor\n");
 		clean(th, shared);
-		return (exit_code);
+		return (1);
 	}
-	start_routine(shared, th);
+	if (start_routine(shared, th))
+		*(shared->run_simulation) = 0;
 	exit_code = wait_thread_end(th, monitor, shared);
 	clean(th, shared);
 	return (exit_code);
 }
 
-void	start_routine(t_data *shared, pthread_t *th)
+int	start_routine(t_data *shared, pthread_t *th)
 {
-	t_philo			*philo;
+	t_philo			**philosophers;
 	int				i;
 
+	philosophers = (t_philo **)malloc(sizeof(t_philo *) * shared->n_philo);
+	if (!philosophers)
+		return (1);
+	if (init_philo(philosophers, shared))
+		return (1);
 	i = 0;
+	gettimeofday(&(shared->start), NULL);
+	set_last_meal(shared);
 	while (i < shared->n_philo)
 	{
-		philo = (t_philo *)malloc(sizeof(t_philo));
-		if (philo)
+		if (pthread_create(th + i, NULL, &routine, philosophers[i]) != 0)
 		{
-			init_philo(philo, shared, i);
-			if (pthread_create(th + i, NULL, &routine, philo) != 0)
-			{
-				printf("Error: Failed to create philosopher number %d\n", i);
-				*(shared->run_simulation) = 0;
-			}
+			printf("Error: Failed to create philosopher number %d\n", i);
+			return (1);
 		}
-		else
-			*(shared->run_simulation) = 0;
 		i++;
 	}
+	free(philosophers);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/03 10:48:00 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/05 14:25:36 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_data
 	pthread_mutex_t	m_write;
 	pthread_mutex_t	*m_forks;
 	pthread_mutex_t	m_meal;
+	pthread_mutex_t	m_last_meal;
 }					t_data;
 
 typedef struct s_philo
@@ -56,13 +57,12 @@ typedef struct s_philo
 
 int					arg_format_is_wrong(int argc, char **argv);
 int					start_simulation(int argc, char **argv);
-void				start_routine(t_data *shared, pthread_t *th);
+int				start_routine(t_data *shared, pthread_t *th);
 
 // philo_utils.c
 
 void				*routine(void *num);
-void				print_log(int id, t_data *shared, char *msg,
-						int msg_is_died);
+void				print_log(int id, t_data *shared, char *msg, int msg_is_died);
 void				clean(pthread_t *th, t_data *shared);
 int					wait_thread_end(pthread_t *th, pthread_t monitor,
 						t_data *shared);
@@ -72,7 +72,9 @@ int					wait_thread_end(pthread_t *th, pthread_t monitor,
 t_data				*new_data(int argc, char **argv);
 int					init_data(t_data *shared, int size);
 void				fill_data_ptr(t_data *shared);
-void				init_philo(t_philo *philo, t_data *shared, int i);
+void				set_last_meal(t_data *shared);
+int					init_philo(t_philo **philosophers, t_data *shared);
+void				clean_philosophers(t_philo **philosophers, int size);
 
 // monitor.c
 
@@ -90,6 +92,7 @@ void				ft_think(t_philo *philo);
 
 size_t				timestamp(struct timeval *start);
 size_t				ft_time(struct timeval *time);
+size_t				ft_get_diff(size_t time);
 void				ft_usleep(int ms);
 
 // state_utils.c

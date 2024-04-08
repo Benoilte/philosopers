@@ -6,7 +6,7 @@
 /*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 18:26:56 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/08 20:36:13 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,14 @@ enum
 
 enum
 {
-	SLEEP,
-	EAT,
-	THINK,
-	TAKE_FORKS
+	WANT_TO_SLEEP,
+	WANT_TO_EAT,
+	WANT_TO_THINK,
+	SLEEPING,
+	EATING,
+	THINKING,
+	TAKE_FORKS,
+	DEAD
 };
 
 typedef struct s_locker
@@ -57,7 +61,7 @@ typedef struct s_time
 typedef struct s_table
 {
 	int				nbr_philo;
-	int				dead_philo;
+	int				dead_flag;
 	int				meals_limit;
 	int				meals_limit_reached;
 	pthread_t		supervisor;
@@ -108,9 +112,10 @@ int			locker_mutex_init(t_locker *locker, pthread_mutex_t *mutex,
 t_philo		*init_all_philosophers(t_table *table);
 t_philo		*init_one_philosophers(t_table *table, int id);
 
-// operate_philo_lst.c
+// set_philosophers.c
 
 void		add_philo_to_philosophers(t_philo *philo, t_philo **philosophers);
+void		init_philosophers_dinner_start(t_table *table);
 
 // philosopher_routine.c
 
@@ -125,6 +130,22 @@ void		start_supervisor(t_table *table, int *status);
 void		wait_the_end_of_supervisor(t_table *table, int *status);
 void		*monitoring(void *arg);
 
+// modify_shared_variable.c
+
+void		modify_dead_flag(t_philo *philo);
+
+// read_shared_variable.c
+
+int			read_dead_flag(t_philo *philo);
+
+// time.c
+
+size_t		get_actual_time(void);
+size_t		timestamp(size_t start);
+size_t		ft_time(struct timeval *time);
+size_t		ft_get_diff(size_t time);
+void		ft_usleep(int ms);
+
 // cleaning.c
 
 void		clean_table(t_table *table, int *status);
@@ -136,6 +157,8 @@ void		clean_all_philosophers(t_philo **philo, int *status);
 // verbose.c
 
 void		print_argument_definition(int arg);
+void		select_log_msg(t_philo *philo);
+void		print_log_state(t_philo *philo, char *msg);
 
 // libft_utils.c
 

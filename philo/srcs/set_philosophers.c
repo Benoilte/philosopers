@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   operate_philo_lst.c                                :+:      :+:    :+:   */
+/*   set_philosophers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:59:43 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 14:34:25 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/08 19:21:06 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,23 @@ void	add_philo_to_philosophers(t_philo *philo, t_philo **philosophers)
 		philo->next = *philosophers;
 		philo->right_fork = &((*philosophers)->left_fork);
 		(*philosophers)->prev = philo;
+	}
+}
+
+void	init_philosophers_dinner_start(t_table *table)
+{
+	size_t	starting_time;
+	t_philo	*philo;
+	int		i;
+
+	i = 1;
+	philo = table->first_philo;
+	starting_time = get_actual_time();
+	philo->time->start_time = starting_time;
+	while (i <= table->nbr_philo)
+	{
+		philo->last_meal_eaten = starting_time;
+		philo = philo->next;
+		i++;
 	}
 }

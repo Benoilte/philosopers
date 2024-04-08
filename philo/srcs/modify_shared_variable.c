@@ -6,17 +6,24 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 20:20:45 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 23:46:03 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 00:22:15 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	modify_dead_flag(t_philo *philo)
+void	modify_dead_flag(t_table *table)
 {
-	pthread_mutex_lock(&(philo->table->locker->death));
-	philo->table->dead_flag = 1;
-	pthread_mutex_unlock(&(philo->table->locker->death));
+	pthread_mutex_lock(&(table->locker->death));
+	table->dead_flag = 1;
+	pthread_mutex_unlock(&(table->locker->death));
+}
+
+void	modify_meals_limit_reached(t_table *table)
+{
+	pthread_mutex_lock(&(table->locker->meals_limit_reached));
+	table->meals_limit_reached = 1;
+	pthread_mutex_unlock(&(table->locker->meals_limit_reached));
 }
 
 void	modify_last_meal_eaten(t_philo *philo)

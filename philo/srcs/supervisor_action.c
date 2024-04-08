@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   supervisor_action.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:57:32 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 20:33:32 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 00:39:25 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,53 @@ void	*monitoring(void *arg)
 	t_table	*table;
 
 	table = (t_table *)arg;
-	
-	pthread_mutex_lock(&(table->locker->write));
-	// print_table(table);
-	pthread_mutex_unlock(&(table->locker->write));
-	while (table->dead_flag == 0)
-		;
+	while (dinner_is_not_finished(table->first_philo))
+	{
+		if (meals_limit_is_reached(table))
+			break ;
+		if (one_philosopher_starve(table))
+			break ;
+	}
 	return (NULL);
+}
+
+int	meals_limit_is_reached(t_table *table)
+{
+	t_philo	*philo;
+	int		i;
+
+	i = 1;
+	philo = table->first_philo;
+	while (i <= table->nbr_philo)
+	{
+		if (read_meals_eaten(philo) < table->meals_limit)
+			return (0);
+		philo = philo->next;
+		i++;
+	}
+	modify_meals_limit_reached(table);
+	return (1);
+}
+
+int	one_philosopher_starve(t_table *table)
+{
+	t_philo	*philo;
+	size_t	time_to_last_meal_eaten;
+	int		i;
+
+	i = 1;
+	philo = table->first_philo;
+	while (i <= table->nbr_philo)
+	{
+		time_to_last_meal_eaten = ft_get_diff(read_last_meals_eaten(philo));
+		if (time_to_last_meal_eaten > (size_t)(table->time->time_to_die))
+		{
+			modify_dead_flag(table);
+			philo_die(philo);
+			return (1);
+		}
+		philo = philo->next;
+		i++;
+	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:50:48 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 14:54:48 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/08 18:16:55 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,20 @@ void	print_philosophers(t_philo *philosophers)
 	printf("\nDISPLAY PHILOSOPHER STRUCTURE\n");
 	while (philo)
 	{
-		printf("\n\nDISPLAY PHILO\n");
-		printf("philo id: %d\n", philo->id);
-		printf("philo state: %d\n", philo->state);
-		printf("philo meals eaten: %d\n", philo->meals_eaten);
-		printf("philo last meals eaten: %zu\n", philo->last_meal_eaten);
+		print_philo(philo);
 		if (philo->id == philo->table->nbr_philo)
 			break ;
 		philo = philo->next;
 	}
+}
+
+void	print_philo(t_philo *philo)
+{
+	printf("\n\nDISPLAY PHILO\n");
+	printf("philo id: %d\n", philo->id);
+	printf("philo state: %d\n", philo->state);
+	printf("philo meals eaten: %d\n", philo->meals_eaten);
+	printf("philo last meals eaten: %zu\n", philo->last_meal_eaten);
+	printf("philo left fork address: %p\n", &(philo->left_fork));
+	printf("philo right fork address: %p\n", philo->right_fork);
 }

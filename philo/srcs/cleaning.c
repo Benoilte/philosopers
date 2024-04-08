@@ -6,58 +6,64 @@
 /*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:16:28 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 15:05:50 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/08 18:42:12 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	clean_table(t_table *table)
+void	clean_table(t_table *table, int *status)
 {
 	if (!table)
 		return ;
 	if (table->locker)
-		clean_locker(table->locker, 3);
+		clean_locker(table->locker, 5, status);
 	if (table->time)
 		free(table->time);
 	if (table->first_philo)
-		clean_all_philosophers(&(table->first_philo));
+		clean_all_philosophers(&(table->first_philo), status);
 	free(table);
 }
 
-void	clean_locker(t_locker *locker, int nbr_of_locker_to_del)
+void	clean_locker(t_locker *locker, int nbr_of_locker, int *status)
 {
 	if (!locker)
 		return ;
-	if (nbr_of_locker_to_del >= 1)
-	{
-		if (pthread_mutex_destroy(&(locker->write)))
-			printf("Error: Failed to destroy write mutex\n");
-	}
-	if (nbr_of_locker_to_del >= 2)
-	{
-		if (pthread_mutex_destroy(&(locker->meal)))
-			printf("Error: Failed to destroy meal mutex\n");
-	}
-	if (nbr_of_locker_to_del >= 3)
-	{
-		if (pthread_mutex_destroy(&(locker->last_meal)))
-			printf("Error: Failed to destroy last_meal mutex\n");
-	}
+	if (nbr_of_locker >= 1)
+		locker_mutex_destroy(&(locker->write), "write", status);
+	if (nbr_of_locker >= 2)
+		locker_mutex_destroy(&(locker->meals_limit), "meals_limit", status);
+	if (nbr_of_locker >= 3)
+		locker_mutex_destroy(&(locker->meals_limit_reached),
+			"meals_limit_reached", status);
+	if (nbr_of_locker >= 4)
+		locker_mutex_destroy(&(locker->last_meal), "last_meal", status);
+	if (nbr_of_locker >= 5)
+		locker_mutex_destroy(&(locker->death), "death", status);
 	free(locker);
 }
 
-void	clean_all_philosophers(t_philo **philo)
+void	locker_mutex_destroy(pthread_mutex_t *mutex, char *msg, int *status)
+{
+	if (pthread_mutex_destroy(mutex))
+	{
+		printf("Error: Failed to destroy %s mutex\n", msg);
+		if (status)
+			*status = EXIT_FAILURE;
+	}
+}
+
+void	clean_all_philosophers(t_philo **philosophers, int *status)
 {
 	t_philo	*philo_to_free;
 	t_philo	*next_philo;
 
-	if (!*philo)
+	if (!*philosophers)
 		return ;
-	philo_to_free = *philo;
+	philo_to_free = *philosophers;
 	if (philo_to_free->prev)
 		philo_to_free->prev->next = NULL;
-	*philo = NULL;
+	*philosophers = NULL;
 	while (philo_to_free)
 	{
 		next_philo = philo_to_free->next;
@@ -65,6 +71,8 @@ void	clean_all_philosophers(t_philo **philo)
 		{
 			printf("Error: Failed to destroy left_fork mutex");
 			printf(" of philo %d\n", philo_to_free->id);
+			if (status)
+				*status = EXIT_FAILURE;
 		}
 		philo_to_free->time = NULL;
 		philo_to_free->table = NULL;

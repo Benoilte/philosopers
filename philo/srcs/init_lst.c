@@ -6,7 +6,7 @@
 /*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:05:56 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 15:08:03 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/08 18:40:21 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ t_table	*init_table(int argc, char **argv)
 	table->locker = init_locker();
 	if (!table->locker)
 	{
+		free(table->time);
 		free(table);
-		free(time);
 		return (NULL);
 	}
 	table->first_philo = NULL;
@@ -62,71 +62,28 @@ t_locker	*init_locker(void)
 	locker = (t_locker *)malloc(sizeof(t_locker));
 	if (!locker)
 		return (NULL);
-	if (pthread_mutex_init(&(locker->write), NULL))
-	{
-		printf("Error: Failed to init write mutex\n");
-		clean_locker(locker, 0);
+	if (locker_mutex_init(locker, &(locker->write), "write", 0))
 		return (NULL);
-	}
-	if (pthread_mutex_init(&(locker->meal), NULL))
-	{
-		printf("Error: Failed to init meal mutex\n");
-		clean_locker(locker, 1);
+	if (locker_mutex_init(locker, &(locker->meals_limit), "meals_limit", 1))
 		return (NULL);
-	}
-	if (pthread_mutex_init(&(locker->last_meal), NULL))
-	{
-		printf("Error: Failed to init last_meal mutex");
-		clean_locker(locker, 2);
+	if (locker_mutex_init(locker, &(locker->meals_limit_reached),
+			"meals_limit_reached", 2))
 		return (NULL);
-	}
+	if (locker_mutex_init(locker, &(locker->last_meal), "last_meal", 3))
+		return (NULL);
+	if (locker_mutex_init(locker, &(locker->death), "death", 4))
+		return (NULL);
 	return (locker);
 }
 
-t_philo	*init_all_philosophers(t_table *table)
+int	locker_mutex_init(t_locker *locker, pthread_mutex_t *mutex, char *msg,
+					int nbr_of_locker)
 {
-	t_philo	*philo;
-	t_philo	*philosophers;
-	int		i;
-
-	i = 1;
-	philosophers = NULL;
-	while (i <= table->nbr_philo)
+	if (pthread_mutex_init(mutex, NULL))
 	{
-		philo = init_one_philosophers(table, i);
-		if (!philo)
-		{
-			clean_all_philosophers(&philosophers);
-			return (NULL);
-		}
-		add_philo_to_philosophers(philo, &philosophers);
-		i++;
+		printf("Error: Failed to init %s mutex\n", msg);
+		clean_locker(locker, nbr_of_locker, NULL);
+		return (EXIT_FAILURE);
 	}
-	return (philosophers);
-}
-
-t_philo	*init_one_philosophers(t_table *table, int id)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)malloc(sizeof(t_philo));
-	if (!philo)
-		return (NULL);
-	if (pthread_mutex_init(&(philo->left_fork), NULL))
-	{
-		printf("Error: Failed to init left_fork mutex");
-		printf(" of philo %d\n", id);
-		free(philo);
-		return (NULL);
-	}
-	philo->id = id;
-	philo->state = id % 2;
-	philo->meals_eaten = 0;
-	philo->last_meal_eaten = 0;
-	philo->right_fork = NULL;
-	philo->table = table;
-	philo->time = table->time;
-	philo->prev = NULL;
-	philo->next = NULL;
-	return (philo);
+	return (EXIT_SUCCESS);
 }

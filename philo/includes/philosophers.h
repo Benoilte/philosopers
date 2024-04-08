@@ -6,7 +6,7 @@
 /*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 14:45:24 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/08 18:26:56 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,6 @@
 # include <limits.h>
 # include <pthread.h>
 # include <sys/time.h>
-
-enum
-{
-	OK,
-	ERROR
-};
 
 enum
 {
@@ -46,8 +40,10 @@ enum
 typedef struct s_locker
 {
 	pthread_mutex_t	write;
-	pthread_mutex_t	meal;
+	pthread_mutex_t	meals_limit;
+	pthread_mutex_t	meals_limit_reached;
 	pthread_mutex_t	last_meal;
+	pthread_mutex_t	death;
 }					t_locker;
 
 typedef struct s_time
@@ -63,6 +59,8 @@ typedef struct s_table
 	int				nbr_philo;
 	int				dead_philo;
 	int				meals_limit;
+	int				meals_limit_reached;
+	pthread_t		supervisor;
 	struct s_time	*time;
 	struct s_locker	*locker;
 	struct s_philo	*first_philo;
@@ -86,6 +84,8 @@ typedef struct s_philo
 // philo.c
 
 int			prep_philosophers_dinner(int argc, char **argv);
+void		run_philosophers_dinner(t_table *table, int *status);
+void		wait_the_end_of_philosophers_dinner(t_table *table, int *status);
 
 // check_arg_input.c
 
@@ -100,6 +100,11 @@ int			arg_format_is_equal_to_zero(int argc, char **argv);
 t_table		*init_table(int argc, char **argv);
 t_time		*init_time(char **argv);
 t_locker	*init_locker(void);
+int			locker_mutex_init(t_locker *locker, pthread_mutex_t *mutex,
+				char *msg, int nbr_of_locker);
+
+// init_philo_lst.c
+
 t_philo		*init_all_philosophers(t_table *table);
 t_philo		*init_one_philosophers(t_table *table, int id);
 
@@ -107,11 +112,26 @@ t_philo		*init_one_philosophers(t_table *table, int id);
 
 void		add_philo_to_philosophers(t_philo *philo, t_philo **philosophers);
 
+// philosopher_routine.c
+
+void		start_routine_alone(t_table *table, int *status);
+void		start_routine_together(t_table *table, int *status);
+void		*routine_for_one(void *arg);
+void		*routine(void *arg);
+
+// supervisor_action.c
+
+void		start_supervisor(t_table *table, int *status);
+void		wait_the_end_of_supervisor(t_table *table, int *status);
+void		*monitoring(void *arg);
+
 // cleaning.c
 
-void		clean_table(t_table *table);
-void		clean_locker(t_locker *locker, int nbr_of_locker_to_del);
-void		clean_all_philosophers(t_philo **philo);
+void		clean_table(t_table *table, int *status);
+void		clean_locker(t_locker *locker, int nbr_of_locker, int *status);
+void		locker_mutex_destroy(pthread_mutex_t *mutex, char *msg,
+				int *status);
+void		clean_all_philosophers(t_philo **philo, int *status);
 
 // verbose.c
 
@@ -129,5 +149,6 @@ void		print_data_structure(t_table *table);
 void		print_table(t_table *table);
 void		print_time(t_time *time);
 void		print_philosophers(t_philo *philosophers);
+void		print_philo(t_philo *philo);
 
 #endif

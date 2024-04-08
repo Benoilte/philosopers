@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_arg_input.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
+/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 18:54:08 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 09:23:08 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:33:11 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 int	arg_is_not_valid(int argc, char **argv)
 {
 	if (arg_number_is_wrong(argc))
-		return (ERROR);
+		return (EXIT_FAILURE);
 	if (arg_format_is_not_digit(argc, argv))
-		return (ERROR);
+		return (EXIT_FAILURE);
 	if (arg_format_is_greater_than_int_max(argc, argv))
-		return (ERROR);
+		return (EXIT_FAILURE);
 	if (arg_format_is_equal_to_zero(argc, argv))
-		return (ERROR);
-	return (OK);
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 int	arg_number_is_wrong(int argc)
@@ -30,9 +30,9 @@ int	arg_number_is_wrong(int argc)
 	if (argc < 5 || argc > 6)
 	{
 		printf("Error: wrong number of argument.\n");
-		return (ERROR);
+		return (EXIT_FAILURE);
 	}
-	return (OK);
+	return (EXIT_SUCCESS);
 }
 
 int	arg_format_is_not_digit(int argc, char **argv)
@@ -51,13 +51,13 @@ int	arg_format_is_not_digit(int argc, char **argv)
 				printf("Error: (%s) Format.", argv[i]);
 				printf(" Argument has to be positive numbers");
 				printf(" whitout a sign\n");
-				return (ERROR);
+				return (EXIT_FAILURE);
 			}
 			j++;
 		}
 		i++;
 	}
-	return (OK);
+	return (EXIT_SUCCESS);
 }
 
 int	arg_format_is_equal_to_zero(int argc, char **argv)
@@ -72,11 +72,11 @@ int	arg_format_is_equal_to_zero(int argc, char **argv)
 			printf("Error: (%s) Format. ", argv[i]);
 			print_argument_definition(i);
 			printf(" argument must be greater than 0\n");
-			return (ERROR);
+			return (EXIT_FAILURE);
 		}
 		i++;
 	}
-	return (OK);
+	return (EXIT_SUCCESS);
 }
 
 int	arg_format_is_greater_than_int_max(int argc, char **argv)
@@ -92,9 +92,9 @@ int	arg_format_is_greater_than_int_max(int argc, char **argv)
 			print_argument_definition(i);
 			printf(" argument must be lower or equal");
 			printf(" than int max (%d)\n", INT_MAX);
-			return (ERROR);
+			return (EXIT_FAILURE);
 		}
 		i++;
 	}
-	return (OK);
+	return (EXIT_SUCCESS);
 }

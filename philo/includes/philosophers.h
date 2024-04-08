@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 23:58:15 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 00:27:40 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,17 +151,22 @@ void		philo_die(t_philo *philo);
 void		start_supervisor(t_table *table, int *status);
 void		wait_the_end_of_supervisor(t_table *table, int *status);
 void		*monitoring(void *arg);
+int			meals_limit_is_reached(t_table *table);
+int			one_philosopher_starve(t_table *table);
 
 // modify_shared_variable.c
 
-void		modify_dead_flag(t_philo *philo);
+void		modify_dead_flag(t_table *table);
+void		modify_meals_limit_reached(t_table *table);
 void		modify_last_meal_eaten(t_philo *philo);
 void		modify_meals_eaten(t_philo *philo);
 
 // read_shared_variable.c
 
-int			read_dead_flag(t_philo *philo);
-int			read_meals_limit_reached(t_philo *philo);
+int			read_dead_flag(t_table *table);
+int			read_meals_limit_reached(t_table *table);
+int			read_meals_eaten(t_philo *philo);
+size_t		read_last_meals_eaten(t_philo *philo);
 
 // time.c
 

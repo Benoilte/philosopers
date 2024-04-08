@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 23:17:26 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 23:57:39 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 00:40:10 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	philo_eat(t_philo *philo)
 		philo->state = EATING;
 		select_log_msg(philo);
 		ft_usleep(philo->time->time_to_eat);
-		return_forks(philo);
 		philo->state = WANT_TO_SLEEP;
 	}
+	return_forks(philo);
 }
 
 void	philo_sleep(t_philo *philo)
@@ -49,5 +49,6 @@ void	philo_think(t_philo *philo)
 
 void	philo_die(t_philo *philo)
 {
-	(void)philo;
+	philo->state = DEAD;
+	select_log_msg(philo);
 }

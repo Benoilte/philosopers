@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 18:00:38 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 23:56:15 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 00:24:33 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	*routine_for_one(void *arg)
 	pthread_mutex_unlock(&(philo->left_fork));
 	ft_usleep(philo->time->time_to_die);
 	philo->state = DEAD;
-	modify_dead_flag(philo);
+	modify_dead_flag(philo->table);
 	select_log_msg(philo);
 	return (NULL);
 }
@@ -81,17 +81,14 @@ void	*routine(void *arg)
 		if (philo->state == WANT_TO_THINK)
 			philo_think(philo);
 	}
-	pthread_mutex_lock(&(philo->table->locker->write));
-	print_philo(philo);
-	pthread_mutex_unlock(&(philo->table->locker->write));
 	return (NULL);
 }
 
 int	dinner_is_not_finished(t_philo *philo)
 {
-	if (read_dead_flag(philo))
+	if (read_dead_flag(philo->table))
 		return (DINNER_IS_FINISHED);
-	if (read_meals_limit_reached(philo))
+	if (read_meals_limit_reached(philo->table))
 		return (DINNER_IS_FINISHED);
 	return (DINNER_CONTINUE);
 }

@@ -6,7 +6,7 @@
 /*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:05:56 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 18:40:21 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/08 20:31:06 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ t_table	*init_table(int argc, char **argv)
 	if (!table)
 		return (NULL);
 	table->nbr_philo = ft_atoi(argv[NUMBER_OF_PHILOSOPHER]);
-	table->dead_philo = 0;
+	table->dead_flag = 0;
 	table->meals_limit = 0;
+	table->meals_limit_reached = 0;
 	if (argc == 6)
 		table->meals_limit = ft_atoi(argv[MEALS_LIMIT]);
 	table->time = init_time(argv);

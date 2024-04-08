@@ -6,7 +6,7 @@
 /*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:50:48 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 18:16:55 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/08 20:31:52 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ void	print_table(t_table *table)
 {
 	printf("\nDISPLAY TABLE SRUCTURE\n");
 	printf("Number of philosopher: %d\n", table->nbr_philo);
-	printf("dead_philo: %d\n", table->dead_philo);
+	printf("dead_flag: %d\n", table->dead_flag);
 	printf("meals_limit: %d\n", table->meals_limit);
+	printf("meals_limit_reached: %d\n", table->meals_limit_reached);
 }
 
 void	print_time(t_time *time)
@@ -58,7 +59,7 @@ void	print_philo(t_philo *philo)
 	printf("philo id: %d\n", philo->id);
 	printf("philo state: %d\n", philo->state);
 	printf("philo meals eaten: %d\n", philo->meals_eaten);
-	printf("philo last meals eaten: %zu\n", philo->last_meal_eaten);
+	printf("philo last meals eaten: %zu\n", timestamp(philo->last_meal_eaten));
 	printf("philo left fork address: %p\n", &(philo->left_fork));
 	printf("philo right fork address: %p\n", philo->right_fork);
 }

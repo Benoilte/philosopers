@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verbose.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
+/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 08:47:13 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 09:04:32 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/08 20:05:00 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,25 @@ void	print_argument_definition(int arg)
 		printf("Time to sleep");
 	else if (arg == MEALS_LIMIT)
 		printf("Number of times each philosopher must eat");
+}
+
+void	select_log_msg(t_philo *philo)
+{
+	if (philo->state == TAKE_FORKS)
+		print_log_state(philo, "has taken a fork");
+	else if (philo->state == EATING)
+		print_log_state(philo, "is eating");
+	else if (philo->state == SLEEPING)
+		print_log_state(philo, "is sleeping");
+	else if (philo->state == THINKING)
+		print_log_state(philo, "is thinking");
+	else if (philo->state == DEAD)
+		print_log_state(philo, "died");
+}
+
+void	print_log_state(t_philo *philo, char *msg)
+{
+	pthread_mutex_lock(&(philo->table->locker->write));
+	printf("%10zu ms %d %s\n", timestamp(philo->time->start_time), philo->id, msg);
+	pthread_mutex_unlock(&(philo->table->locker->write));
 }

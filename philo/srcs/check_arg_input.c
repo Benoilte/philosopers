@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 18:54:08 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 09:13:42 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/08 09:23:08 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int	arg_is_not_valid(int argc, char **argv)
 		return (ERROR);
 	if (arg_format_is_not_digit(argc, argv))
 		return (ERROR);
-	if (arg_format_is_not_greater_than_zero(argc, argv))
+	if (arg_format_is_greater_than_int_max(argc, argv))
 		return (ERROR);
-	if (arg_format_is_bigger_than_int_max(argc, argv))
+	if (arg_format_is_equal_to_zero(argc, argv))
 		return (ERROR);
 	return (OK);
 }
@@ -60,14 +60,14 @@ int	arg_format_is_not_digit(int argc, char **argv)
 	return (OK);
 }
 
-int	arg_format_is_not_greater_than_zero(int argc, char **argv)
+int	arg_format_is_equal_to_zero(int argc, char **argv)
 {
 	int	i;
 
 	i = 1;
 	while (i < argc)
 	{
-		if (ft_atoi_long(argv[i]) <= 0)
+		if (ft_atoi_long(argv[i]) == 0)
 		{
 			printf("Error: (%s) Format. ", argv[i]);
 			print_argument_definition(i);
@@ -79,7 +79,7 @@ int	arg_format_is_not_greater_than_zero(int argc, char **argv)
 	return (OK);
 }
 
-int	arg_format_is_bigger_than_int_max(int argc, char **argv)
+int	arg_format_is_greater_than_int_max(int argc, char **argv)
 {
 	int	i;
 

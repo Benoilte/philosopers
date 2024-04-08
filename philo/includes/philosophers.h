@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 09:08:59 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/08 09:23:38 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ int		start_philosophers_dinner(int argc, char **argv);
 int		arg_is_not_valid(int argc, char **argv);
 int		arg_number_is_wrong(int argc);
 int		arg_format_is_not_digit(int argc, char **argv);
-int		arg_format_is_not_greater_than_zero(int argc, char **argv);
-int		arg_format_is_bigger_than_int_max(int argc, char **argv);
+int		arg_format_is_greater_than_int_max(int argc, char **argv);
+int		arg_format_is_equal_to_zero(int argc, char **argv);
 
 
 // verbose.c

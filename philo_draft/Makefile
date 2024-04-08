@@ -6,22 +6,18 @@
 #    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 11:59:35 by bebrandt          #+#    #+#              #
-#    Updated: 2024/04/08 08:56:52 by bebrandt         ###   ########.fr        #
+#    Updated: 2024/04/07 12:20:29 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	philo
+NAME		=	philo_draft
+SRCS		=	$(addsuffix .c, philo philo_utils init monitor state state_utils time ft_atoi)
+OBJ 		= $(SRCS:.c=.o)
+OBJS 	= $(addprefix $(OBJ_DIR),$(OBJ))
 
 SRCS_DIR		=	srcs/
 
-SRCS			=	$(addsuffix .c, philo check_arg_input verbose libft_utils\
-									)
-
 OBJ_DIR			=	objs/
-
-OBJ 			=	$(SRCS:.c=.o)
-
-OBJS 			=	$(addprefix $(OBJ_DIR),$(OBJ))
 
 HDRS			=	-Iincludes/.
 

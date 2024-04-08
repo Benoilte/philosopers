@@ -1,6 +1,14 @@
 {
-	"files.associations": {
-		"stdio.h": "c",
-		"philosophers.h": "c"
+	"42header.email": "benoit.brandt@proton.me",
+	"42header.username": "bebrandt",
+	"C_Cpp.errorSquiggles": "disabled",
+	"files.watcherExclude": {
+    "**/target": true
 	}
+	[dockercompose]:  {
+		"editor.insertSpaces": true,
+		"editor.tabSize": 4,
+		"editor.autoIndent": "advanced"
+	},
+	"editor.renderFinalNewline": "off"
 }

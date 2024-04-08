@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:16:28 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 18:42:12 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/08 22:28:58 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,25 @@ void	clean_all_philosophers(t_philo **philosophers, int *status)
 	while (philo_to_free)
 	{
 		next_philo = philo_to_free->next;
-		if (pthread_mutex_destroy(&(philo_to_free->left_fork)))
-		{
-			printf("Error: Failed to destroy left_fork mutex");
-			printf(" of philo %d\n", philo_to_free->id);
-			if (status)
-				*status = EXIT_FAILURE;
-		}
+		philo_mutex_destroy(&(philo_to_free->left_fork),
+			philo_to_free->id, "left_fork", status);
+		philo_mutex_destroy(&(philo_to_free->meals),
+			philo_to_free->id, "meals", status);
 		philo_to_free->time = NULL;
 		philo_to_free->table = NULL;
 		free(philo_to_free);
 		philo_to_free = next_philo;
+	}
+}
+
+void	philo_mutex_destroy(pthread_mutex_t *mutex, int id, char *msg,
+			int *status)
+{
+	if (pthread_mutex_destroy(mutex))
+	{
+		printf("Error: Failed to destroy %s mutex", msg);
+		printf(" of philo %d\n", id);
+		if (status)
+			*status = EXIT_FAILURE;
 	}
 }

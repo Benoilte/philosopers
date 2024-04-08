@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 20:36:13 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/08 22:30:06 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_philo
 	int				meals_eaten;
 	size_t			last_meal_eaten;
 	pthread_t		thread;
+	pthread_mutex_t	meals;
 	pthread_mutex_t	left_fork;
 	pthread_mutex_t	*right_fork;
 	struct s_table	*table;
@@ -111,6 +112,7 @@ int			locker_mutex_init(t_locker *locker, pthread_mutex_t *mutex,
 
 t_philo		*init_all_philosophers(t_table *table);
 t_philo		*init_one_philosophers(t_table *table, int id);
+int			philo_mutex_init(t_philo *philo, int id);
 
 // set_philosophers.c
 
@@ -153,6 +155,8 @@ void		clean_locker(t_locker *locker, int nbr_of_locker, int *status);
 void		locker_mutex_destroy(pthread_mutex_t *mutex, char *msg,
 				int *status);
 void		clean_all_philosophers(t_philo **philo, int *status);
+void		philo_mutex_destroy(pthread_mutex_t *mutex, int id, char *msg,
+				int *status);
 
 // verbose.c
 

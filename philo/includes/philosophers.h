@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 22:30:06 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/08 23:58:15 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,18 @@ enum
 	WANT_TO_SLEEP,
 	WANT_TO_EAT,
 	WANT_TO_THINK,
+	READY_TO_EAT,
 	SLEEPING,
 	EATING,
 	THINKING,
 	TAKE_FORKS,
 	DEAD
+};
+
+enum
+{
+	DINNER_IS_FINISHED,
+	DINNER_CONTINUE
 };
 
 typedef struct s_locker
@@ -125,6 +132,19 @@ void		start_routine_alone(t_table *table, int *status);
 void		start_routine_together(t_table *table, int *status);
 void		*routine_for_one(void *arg);
 void		*routine(void *arg);
+int			dinner_is_not_finished(t_philo *philo);
+
+// manage_philosophers_forks.c
+
+void		take_forks(t_philo *philo);
+void		return_forks(t_philo *philo);
+
+// perform_philosophers_action.c
+
+void		philo_eat(t_philo *philo);
+void		philo_sleep(t_philo *philo);
+void		philo_think(t_philo *philo);
+void		philo_die(t_philo *philo);
 
 // supervisor_action.c
 
@@ -135,10 +155,13 @@ void		*monitoring(void *arg);
 // modify_shared_variable.c
 
 void		modify_dead_flag(t_philo *philo);
+void		modify_last_meal_eaten(t_philo *philo);
+void		modify_meals_eaten(t_philo *philo);
 
 // read_shared_variable.c
 
 int			read_dead_flag(t_philo *philo);
+int			read_meals_limit_reached(t_philo *philo);
 
 // time.c
 

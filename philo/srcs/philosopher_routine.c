@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher_routine.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 18:00:38 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 20:30:09 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/08 23:56:15 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,28 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	while (dinner_is_not_finished(philo))
+	{
+		if (philo->state == WANT_TO_EAT)
+			take_forks(philo);
+		if (philo->state == READY_TO_EAT)
+			philo_eat(philo);
+		if (philo->state == WANT_TO_SLEEP)
+			philo_sleep(philo);
+		if (philo->state == WANT_TO_THINK)
+			philo_think(philo);
+	}
 	pthread_mutex_lock(&(philo->table->locker->write));
 	print_philo(philo);
 	pthread_mutex_unlock(&(philo->table->locker->write));
 	return (NULL);
+}
+
+int	dinner_is_not_finished(t_philo *philo)
+{
+	if (read_dead_flag(philo))
+		return (DINNER_IS_FINISHED);
+	if (read_meals_limit_reached(philo))
+		return (DINNER_IS_FINISHED);
+	return (DINNER_CONTINUE);
 }

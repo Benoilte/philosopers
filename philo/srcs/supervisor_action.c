@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:57:32 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/09 00:39:25 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 01:13:46 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	meals_limit_is_reached(t_table *table)
 	t_philo	*philo;
 	int		i;
 
+	if (table->meals_limit == 0)
+		return (0);
 	i = 1;
 	philo = table->first_philo;
 	while (i <= table->nbr_philo)
@@ -77,8 +79,8 @@ int	one_philosopher_starve(t_table *table)
 		time_to_last_meal_eaten = ft_get_diff(read_last_meals_eaten(philo));
 		if (time_to_last_meal_eaten > (size_t)(table->time->time_to_die))
 		{
-			modify_dead_flag(table);
 			philo_die(philo);
+			modify_dead_flag(table);
 			return (1);
 		}
 		philo = philo->next;

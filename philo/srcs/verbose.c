@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   verbose.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 08:47:13 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 20:05:00 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 01:11:07 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ void	select_log_msg(t_philo *philo)
 void	print_log_state(t_philo *philo, char *msg)
 {
 	pthread_mutex_lock(&(philo->table->locker->write));
-	printf("%10zu ms %d %s\n", timestamp(philo->time->start_time), philo->id, msg);
+	if (dinner_is_not_finished(philo))
+		printf("%10zu ms %d %s\n", timestamp(philo->time->start_time), philo->id, msg);
+	if (philo->state == DEAD)
+		modify_dead_flag(philo->table);
 	pthread_mutex_unlock(&(philo->table->locker->write));
 }

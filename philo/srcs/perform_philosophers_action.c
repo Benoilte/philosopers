@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 23:17:26 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/09 00:40:10 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 01:03:11 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	philo_think(t_philo *philo)
 {
 	if (dinner_is_not_finished(philo))
 	{
-		philo->state = SLEEPING;
+		philo->state = THINKING;
 		select_log_msg(philo);
 		philo->state = WANT_TO_EAT;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
+/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:19 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/03/26 18:07:18 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:38:54 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	main(int argc, char **argv)
 	int	exit_code;
 
 	exit_code = 0;
+	sem_unlink(LOCK_FORKS);
+	sem_unlink(LOCK_WRITE);
 	if (argc == 5 || argc == 6)
 	{
 		if (arg_format_is_wrong(argc, argv))

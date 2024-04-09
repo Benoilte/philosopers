@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 14:51:52 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/09 13:19:53 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:41:55 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	init_semaphore(t_philo *philo, sem_t *sem_forks, sem_t *sem_write)
 		printf("Error: sem_open() FAILED to create sem_forks\n");
 		return (SEMAPHORES_FAILURE);
 	}
-	sem_write = sem_open(LOCK_WRITE, O_CREAT, 0600, 6);
+	sem_write = sem_open(LOCK_WRITE, O_CREAT, 0600, 4);
 	if (sem_write == SEM_FAILED)
 	{
 		printf("Error: sem_open() FAILED to create sem_write\n");

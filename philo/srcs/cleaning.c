@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:16:28 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 22:28:58 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 11:50:50 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	clean_table(t_table *table, int *status)
 	if (!table)
 		return ;
 	if (table->locker)
-		clean_locker(table->locker, 5, status);
+		clean_locker(table->locker, 3, status);
 	if (table->time)
 		free(table->time);
 	if (table->first_philo)
@@ -30,15 +30,11 @@ void	clean_locker(t_locker *locker, int nbr_of_locker, int *status)
 	if (!locker)
 		return ;
 	if (nbr_of_locker >= 1)
-		locker_mutex_destroy(&(locker->write), "write", status);
+		locker_mutex_destroy(&(locker->print), "print", status);
 	if (nbr_of_locker >= 2)
-		locker_mutex_destroy(&(locker->meals_limit), "meals_limit", status);
-	if (nbr_of_locker >= 3)
 		locker_mutex_destroy(&(locker->meals_limit_reached),
 			"meals_limit_reached", status);
-	if (nbr_of_locker >= 4)
-		locker_mutex_destroy(&(locker->last_meal), "last_meal", status);
-	if (nbr_of_locker >= 5)
+	if (nbr_of_locker >= 3)
 		locker_mutex_destroy(&(locker->death), "death", status);
 	free(locker);
 }

@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/09 00:27:40 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 11:50:12 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,22 @@ enum
 	DINNER_CONTINUE
 };
 
+enum
+{
+	PHILOSOPHERS_ARE_STILL_HUNGRY,
+	ALL_PHILOSOPHER_EAT_ENOUGH
+};
+
+enum
+{
+	ALL_PHILOSOPHER_ARE_ALIVE,
+	ONE_PHILOSOPHER_IS_DEAD
+};
+
 typedef struct s_locker
 {
-	pthread_mutex_t	write;
-	pthread_mutex_t	meals_limit;
+	pthread_mutex_t	print;
 	pthread_mutex_t	meals_limit_reached;
-	pthread_mutex_t	last_meal;
 	pthread_mutex_t	death;
 }					t_locker;
 
@@ -125,6 +135,7 @@ int			philo_mutex_init(t_philo *philo, int id);
 
 void		add_philo_to_philosophers(t_philo *philo, t_philo **philosophers);
 void		init_philosophers_dinner_start(t_table *table);
+void		modify_philo_state(t_philo *philo, int state);
 
 // philosopher_routine.c
 
@@ -189,8 +200,9 @@ void		philo_mutex_destroy(pthread_mutex_t *mutex, int id, char *msg,
 // verbose.c
 
 void		print_argument_definition(int arg);
-void		select_log_msg(t_philo *philo);
-void		print_log_state(t_philo *philo, char *msg);
+void		print_philo_status(t_philo *philo);
+void		print_log(t_philo *philo, char *msg);
+void		print_dead_log(t_philo *philo, char *msg);
 
 // libft_utils.c
 

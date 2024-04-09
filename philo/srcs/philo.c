@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 12:34:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 18:50:50 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 11:43:20 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,14 @@ int	prep_philosophers_dinner(int argc, char **argv)
 	exit_status = EXIT_SUCCESS;
 	table = init_table(argc, argv);
 	if (!table)
+	{
+		printf("Error: Failed to initialize table structure\n");
 		return (EXIT_FAILURE);
+	}
 	philosophers = init_all_philosophers(table);
 	if (!philosophers)
 	{
+		printf("Error: Failed to initialize  hilosophers structure\n");
 		clean_table(table, &exit_status);
 		return (EXIT_FAILURE);
 	}

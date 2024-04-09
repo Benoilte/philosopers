@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:57:32 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/09 01:13:46 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 11:33:56 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	*monitoring(void *arg)
 	table = (t_table *)arg;
 	while (dinner_is_not_finished(table->first_philo))
 	{
-		if (meals_limit_is_reached(table))
+		if (table->meals_limit && read_dead_flag(table) == 0
+			&& meals_limit_is_reached(table))
 			break ;
 		if (one_philosopher_starve(table))
 			break ;
@@ -51,19 +52,17 @@ int	meals_limit_is_reached(t_table *table)
 	t_philo	*philo;
 	int		i;
 
-	if (table->meals_limit == 0)
-		return (0);
 	i = 1;
 	philo = table->first_philo;
 	while (i <= table->nbr_philo)
 	{
 		if (read_meals_eaten(philo) < table->meals_limit)
-			return (0);
+			return (PHILOSOPHERS_ARE_STILL_HUNGRY);
 		philo = philo->next;
 		i++;
 	}
 	modify_meals_limit_reached(table);
-	return (1);
+	return (ALL_PHILOSOPHER_EAT_ENOUGH);
 }
 
 int	one_philosopher_starve(t_table *table)
@@ -81,10 +80,10 @@ int	one_philosopher_starve(t_table *table)
 		{
 			philo_die(philo);
 			modify_dead_flag(table);
-			return (1);
+			return (ONE_PHILOSOPHER_IS_DEAD);
 		}
 		philo = philo->next;
 		i++;
 	}
-	return (0);
+	return (ALL_PHILOSOPHER_ARE_ALIVE);
 }

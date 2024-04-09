@@ -6,23 +6,18 @@
 #    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 11:59:35 by bebrandt          #+#    #+#              #
-#    Updated: 2024/04/09 13:49:04 by bebrandt         ###   ########.fr        #
+#    Updated: 2024/04/03 09:29:16 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	philo_bonus
+NAME		=	philo_bonus
+SRCS		=	$(addsuffix .c, philo_bonus philo_bonus_utils routine init ft_atoi)
+OBJ 		= $(SRCS:.c=.o)
+OBJS 	= $(addprefix $(OBJ_DIR),$(OBJ))
 
 SRCS_DIR		=	srcs/
 
-SRCS			=	$(addsuffix .c, philo_bonus check_arg_input verbose libft_utils \
-									init_lst init_philo_lst time \
-									cleaning test)
-
 OBJ_DIR			=	objs/
-
-OBJ 			=	$(SRCS:.c=.o)
-
-OBJS 			=	$(addprefix $(OBJ_DIR),$(OBJ))
 
 HDRS			=	-Iincludes/.
 

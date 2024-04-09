@@ -6,7 +6,7 @@
 #    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 11:59:35 by bebrandt          #+#    #+#              #
-#    Updated: 2024/04/09 13:49:04 by bebrandt         ###   ########.fr        #
+#    Updated: 2024/04/09 16:22:57 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,11 @@ OBJ 			=	$(SRCS:.c=.o)
 
 OBJS 			=	$(addprefix $(OBJ_DIR),$(OBJ))
 
+SEM_NAME		=	unlink_semaphore
+SEM_SRCS		=	$(addsuffix .c, unlink)
+SEM_OBJ 		= 	$(SEM_SRCS:.c=.o)
+SEM_OBJS 		= 	$(addprefix $(OBJ_DIR),$(SEM_OBJ))
+
 HDRS			=	-Iincludes/.
 
 CC				=	gcc $(HDRS)
@@ -38,7 +43,13 @@ NONE			=	\033[0m
 
 all: $(NAME)
 
+sem: $(SEM_NAME)
+
 $(NAME): $(OBJS)
+	@$(CC) $(CFLAGS) -o $@ $^
+	@echo "$(GREEN)##### " $@ "Program is created #####$(NONE)"
+
+$(SEM_NAME): $(SEM_OBJS)
 	@$(CC) $(CFLAGS) -o $@ $^
 	@echo "$(GREEN)##### " $@ "Program is created #####$(NONE)"
 
@@ -49,14 +60,14 @@ $(OBJ_DIR)%.o: $(SRCS_DIR)%.c
 
 clean:
 	@rm -f $(OBJS)
-	@rm -f $(OBJS)
+	@rm -f $(SEM_OBJS)
 	@echo "$(RED)##### Removed object files #####$(NONE)"
 
 fclean: clean
 	@rm -f $(NAME)
-	@rm -f $(NAME)
+	@rm -f $(SEM_NAME)
 	@echo "$(RED)##### Removed binary files #####$(NONE)"
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re sem

@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 23:17:26 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/09 01:03:11 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 11:28:21 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	philo_eat(t_philo *philo)
 	{
 		modify_last_meal_eaten(philo);
 		modify_meals_eaten(philo);
-		philo->state = EATING;
-		select_log_msg(philo);
+		modify_philo_state(philo, EATING);
+		print_philo_status(philo);
 		ft_usleep(philo->time->time_to_eat);
-		philo->state = WANT_TO_SLEEP;
+		modify_philo_state(philo, WANT_TO_SLEEP);
 	}
 	return_forks(philo);
 }
@@ -30,10 +30,10 @@ void	philo_sleep(t_philo *philo)
 {
 	if (dinner_is_not_finished(philo))
 	{
-		philo->state = SLEEPING;
-		select_log_msg(philo);
+		modify_philo_state(philo, SLEEPING);
+		print_philo_status(philo);
 		ft_usleep(philo->time->time_to_sleep);
-		philo->state = WANT_TO_THINK;
+		modify_philo_state(philo, WANT_TO_THINK);
 	}
 }
 
@@ -41,14 +41,18 @@ void	philo_think(t_philo *philo)
 {
 	if (dinner_is_not_finished(philo))
 	{
-		philo->state = THINKING;
-		select_log_msg(philo);
-		philo->state = WANT_TO_EAT;
+		modify_philo_state(philo, THINKING);
+		print_philo_status(philo);
+		modify_philo_state(philo, WANT_TO_EAT);
 	}
 }
 
 void	philo_die(t_philo *philo)
 {
-	philo->state = DEAD;
-	select_log_msg(philo);
+	if (dinner_is_not_finished(philo))
+	{
+		modify_dead_flag(philo->table);
+		modify_philo_state(philo, DEAD);
+		print_philo_status(philo);
+	}
 }

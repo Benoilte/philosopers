@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 18:00:38 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/09 00:24:33 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 10:06:43 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,10 @@ void	*routine_for_one(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	pthread_mutex_lock(&(philo->left_fork));
-	philo->state = TAKE_FORKS;
-	select_log_msg(philo);
-	pthread_mutex_unlock(&(philo->left_fork));
+	modify_philo_state(philo, TAKE_FORKS);
+	print_philo_status(philo);
 	ft_usleep(philo->time->time_to_die);
-	philo->state = DEAD;
-	modify_dead_flag(philo->table);
-	select_log_msg(philo);
+	philo_die(philo);
 	return (NULL);
 }
 

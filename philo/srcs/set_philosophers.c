@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_philosophers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:59:43 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 19:21:06 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 09:58:35 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,9 @@ void	init_philosophers_dinner_start(t_table *table)
 		philo = philo->next;
 		i++;
 	}
+}
+
+void	modify_philo_state(t_philo *philo, int state)
+{
+	philo->state = state;
 }

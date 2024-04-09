@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_lst.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:05:56 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 20:31:06 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 11:52:46 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_table	*init_table(int argc, char **argv)
 	table->meals_limit_reached = 0;
 	if (argc == 6)
 		table->meals_limit = ft_atoi(argv[MEALS_LIMIT]);
+	table->first_philo = NULL;
 	table->time = init_time(argv);
 	if (!table->time)
 	{
@@ -34,11 +35,9 @@ t_table	*init_table(int argc, char **argv)
 	table->locker = init_locker();
 	if (!table->locker)
 	{
-		free(table->time);
-		free(table);
+		clean_table(table, NULL);
 		return (NULL);
 	}
-	table->first_philo = NULL;
 	return (table);
 }
 
@@ -63,16 +62,12 @@ t_locker	*init_locker(void)
 	locker = (t_locker *)malloc(sizeof(t_locker));
 	if (!locker)
 		return (NULL);
-	if (locker_mutex_init(locker, &(locker->write), "write", 0))
-		return (NULL);
-	if (locker_mutex_init(locker, &(locker->meals_limit), "meals_limit", 1))
+	if (locker_mutex_init(locker, &(locker->print), "print", 0))
 		return (NULL);
 	if (locker_mutex_init(locker, &(locker->meals_limit_reached),
-			"meals_limit_reached", 2))
+			"meals_limit_reached", 1))
 		return (NULL);
-	if (locker_mutex_init(locker, &(locker->last_meal), "last_meal", 3))
-		return (NULL);
-	if (locker_mutex_init(locker, &(locker->death), "death", 4))
+	if (locker_mutex_init(locker, &(locker->death), "death", 2))
 		return (NULL);
 	return (locker);
 }

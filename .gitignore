@@ -37,6 +37,7 @@
 *.hex
 philo/philo
 philo_bonus/philo_bonus
+philo_bonus/unlink_semaphore
 
 # Debug files
 *.dSYM/

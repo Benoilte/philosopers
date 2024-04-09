@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 13:37:11 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/09 15:33:34 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:50:28 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <pthread.h>
 # include <sys/time.h>
 # include <semaphore.h>
+# include <fcntl.h>
 
 # define THREAD_NUM 16
 

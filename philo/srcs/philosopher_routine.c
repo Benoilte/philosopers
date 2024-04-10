@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 18:00:38 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/09 10:06:43 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/10 11:29:03 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	start_routine_alone(t_table *table, int *status)
 	t_philo	*philo;
 
 	philo = table->first_philo;
-	init_philosophers_dinner_start(table);
+	set_philosophers_dinner_start(table);
 	if (pthread_create(&(philo->thread), NULL, &routine_for_one, philo) != 0)
 	{
 		printf("Error: Failed to create philosopher %d thread\n", philo->id);
@@ -34,12 +34,13 @@ void	start_routine_together(t_table *table, int *status)
 
 	i = 1;
 	philo = table->first_philo;
-	init_philosophers_dinner_start(table);
+	set_philosophers_dinner_start(table);
 	while (i <= table->nbr_philo)
 	{
 		if (pthread_create(&(philo->thread), NULL, &routine, philo) != 0)
 		{
-			printf("Error: Failed to create philosopher %d thread\n", philo->id);
+			printf("Error: Failed to create philosopher %d thread\n",
+				philo->id);
 			table->dead_flag = 1;
 			*status = EXIT_FAILURE;
 			return ;
@@ -56,7 +57,7 @@ void	*routine_for_one(void *arg)
 	philo = (t_philo *)arg;
 	modify_philo_state(philo, TAKE_FORKS);
 	print_philo_status(philo);
-	ft_usleep(philo->time->time_to_die);
+	ms_sleep(philo->time->time_to_die);
 	philo_die(philo);
 	return (NULL);
 }

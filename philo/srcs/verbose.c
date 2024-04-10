@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 08:47:13 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/09 11:53:53 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/10 11:24:42 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	print_log(t_philo *philo, char *msg)
 	{
 		pthread_mutex_lock(&(philo->table->locker->print));
 		if (dinner_is_not_finished(philo))
-			printf("%8zu ms %d %s\n", timestamp(philo->time->start_time),
+			printf("%8zu ms %d %s\n", ms_timestamp(philo->time->start_time),
 				philo->id, msg);
 		pthread_mutex_unlock(&(philo->table->locker->print));
 	}
@@ -55,7 +55,7 @@ void	print_log(t_philo *philo, char *msg)
 void	print_dead_log(t_philo *philo, char *msg)
 {
 	pthread_mutex_lock(&(philo->table->locker->print));
-	printf("%8zu ms %d %s\n", timestamp(philo->time->start_time),
+	printf("%8zu ms %d %s\n", ms_timestamp(philo->time->start_time),
 		philo->id, msg);
 	pthread_mutex_unlock(&(philo->table->locker->print));
 }

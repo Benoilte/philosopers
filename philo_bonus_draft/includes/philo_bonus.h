@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:22 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/09 12:06:01 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/10 21:38:25 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <sys/time.h>
 # include <sys/wait.h>
 # include <semaphore.h>
-// # include <fcntl.h>
+# include <fcntl.h>
 // # include <type.h>
 
 enum
@@ -58,8 +58,10 @@ typedef struct s_philo
 }					t_philo;
 
 # define LOCK_WRITE "./sem_write"
-
 # define LOCK_FORKS "./sem_forks"
+
+# define DEATH "/death"
+# define EAT_ENOUGH "/eat_enough"
 
 // philo_bonus.c
 

@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/09 11:50:12 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/10 11:21:43 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int			philo_mutex_init(t_philo *philo, int id);
 // set_philosophers.c
 
 void		add_philo_to_philosophers(t_philo *philo, t_philo **philosophers);
-void		init_philosophers_dinner_start(t_table *table);
+void		set_philosophers_dinner_start(t_table *table);
 void		modify_philo_state(t_philo *philo, int state);
 
 // philosopher_routine.c
@@ -167,10 +167,10 @@ int			one_philosopher_starve(t_table *table);
 
 // modify_shared_variable.c
 
-void		modify_dead_flag(t_table *table);
-void		modify_meals_limit_reached(t_table *table);
-void		modify_last_meal_eaten(t_philo *philo);
-void		modify_meals_eaten(t_philo *philo);
+void		set_dead_flag_to_one(t_table *table);
+void		set_meals_limit_reached_to_one(t_table *table);
+void		reset_last_meal_eaten(t_philo *philo);
+void		add_meals_eaten(t_philo *philo);
 
 // read_shared_variable.c
 
@@ -181,11 +181,11 @@ size_t		read_last_meals_eaten(t_philo *philo);
 
 // time.c
 
-size_t		get_actual_time(void);
-size_t		timestamp(size_t start);
-size_t		ft_time(struct timeval *time);
-size_t		ft_get_diff(size_t time);
-void		ft_usleep(int ms);
+size_t		ms_actual_time(void);
+size_t		ms_timestamp(size_t start);
+size_t		ms_time(struct timeval *time);
+size_t		ms_time_diff(size_t time);
+void		ms_sleep(int ms);
 
 // cleaning.c
 

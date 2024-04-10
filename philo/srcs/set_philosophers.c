@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:59:43 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/09 09:58:35 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/10 11:16:20 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	add_philo_to_philosophers(t_philo *philo, t_philo **philosophers)
 	}
 }
 
-void	init_philosophers_dinner_start(t_table *table)
+void	set_philosophers_dinner_start(t_table *table)
 {
 	size_t	starting_time;
 	t_philo	*philo;
@@ -43,7 +43,7 @@ void	init_philosophers_dinner_start(t_table *table)
 
 	i = 1;
 	philo = table->first_philo;
-	starting_time = get_actual_time();
+	starting_time = ms_actual_time();
 	philo->time->start_time = starting_time;
 	while (i <= table->nbr_philo)
 	{

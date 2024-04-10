@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bebrandt <bebrandt@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:50:48 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/08 20:31:52 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/10 11:25:25 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ void	print_philo(t_philo *philo)
 	printf("philo id: %d\n", philo->id);
 	printf("philo state: %d\n", philo->state);
 	printf("philo meals eaten: %d\n", philo->meals_eaten);
-	printf("philo last meals eaten: %zu\n", timestamp(philo->last_meal_eaten));
+	printf("philo last meals eaten: %zu\n",
+		ms_timestamp(philo->last_meal_eaten));
 	printf("philo left fork address: %p\n", &(philo->left_fork));
 	printf("philo right fork address: %p\n", philo->right_fork);
 }

@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 13:37:11 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/10 21:31:35 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/11 13:28:16 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,11 @@
 # include <semaphore.h>
 # include <fcntl.h>
 
+# define PRINT "/print"
+# define FORKS "/forks"
 # define DEATH "/death"
-# define EAT_ENOUGH "/eat_enough"
+# define FULL "/full"
+# define STOP "/stop"
 
 enum
 {
@@ -32,6 +35,12 @@ enum
 	TIME_TO_EAT = 3,
 	TIME_TO_SLEEP = 4,
 	MEALS_LIMIT = 5
+};
+
+enum
+{
+	NO,
+	YES
 };
 
 enum
@@ -55,15 +64,25 @@ enum
 
 enum
 {
-	PHILOSOPHERS_ARE_STILL_HUNGRY,
-	ALL_PHILOSOPHER_EAT_ENOUGH
+	PHILOSOPHER_IS_STILL_HUNGRY,
+	PHILOSOPHER_IS_FULL
 };
 
 enum
 {
-	ALL_PHILOSOPHER_ARE_ALIVE,
-	ONE_PHILOSOPHER_IS_DEAD
+	PHILOSOPHER_IS_ALIVE,
+	PHILOSOPHER_IS_DEAD
 };
+
+typedef struct s_philosopher_parent
+{
+	int				nbr_philosophers_full;
+	int				is_one_philosopher_die;
+	pthread_t		death_supervisor;
+	pthread_t		meals_eaten_supervisor;
+	pid_t			*philosopher_pid;
+	struct s_table	*table;
+}					t_philosopher_parent;
 
 typedef struct s_time
 {
@@ -75,15 +94,29 @@ typedef struct s_time
 
 typedef struct s_table
 {
-	int				nbr_philo;
-	int				dead_flag;
-	int				meals_limit;
-	int				meals_limit_reached;
-	pthread_t		supervisor;
-	struct s_time	*time;
-	struct s_locker	*locker;
-	struct s_philo	*first_philo;
-}					t_table;
+	int					nbr_philo;
+	int					meals_limit;
+	struct s_time		*time;
+	struct s_locker		*locker;
+	struct s_semaphores	*semaphores;
+}						t_table;
+
+typedef struct s_semaphores
+{
+	sem_t	*print;
+	sem_t	*forks;
+	sem_t	*death;
+	sem_t	*full;
+	sem_t	*stop;
+}					t_semaphores;
+
+typedef struct s_locker
+{
+	pthread_mutex_t	meals_limit_flag;
+	pthread_mutex_t	death_flag;
+	pthread_mutex_t	last_meal_flag;
+	pthread_mutex_t	meals_eaten_flag;
+}					t_locker;
 
 typedef struct s_philo
 {
@@ -91,14 +124,13 @@ typedef struct s_philo
 	int				state;
 	int				meals_eaten;
 	size_t			last_meal_eaten;
-	pthread_t		thread;
-	pthread_mutex_t	meals;
-	pthread_mutex_t	left_fork;
-	pthread_mutex_t	*right_fork;
+	int				is_dead;
+	int				is_full;
+	pthread_t		philosopher_supervisor;
+	pthread_t		stop_dinner_supervisor;
 	struct s_table	*table;
 	struct s_time	*time;
-	struct s_philo	*prev;
-	struct s_philo	*next;
+	struct s_locker	*locker;
 }					t_philo;
 
 // philo.c
@@ -122,11 +154,11 @@ int			arg_format_is_equal_to_zero(int argc, char **argv);
 
 // time.c
 
-size_t		get_actual_time(void);
-size_t		timestamp(size_t start);
-size_t		ft_time(struct timeval *time);
-size_t		ft_get_diff(size_t time);
-void		ft_usleep(int ms);
+size_t		ms_actual_time(void);
+size_t		ms_timestamp(size_t start);
+size_t		ms_time(struct timeval *time);
+size_t		ms_time_diff(size_t time);
+void		ms_sleep(int ms);
 
 // cleaning.c
 

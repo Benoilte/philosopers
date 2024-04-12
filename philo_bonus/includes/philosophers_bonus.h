@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 13:37:11 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/11 13:28:16 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/12 17:14:48 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,85 +94,89 @@ typedef struct s_time
 
 typedef struct s_table
 {
-	int					nbr_philo;
-	int					meals_limit;
-	struct s_time		*time;
-	struct s_locker		*locker;
-	struct s_semaphores	*semaphores;
-}						t_table;
+	int						nbr_philo;
+	int						meals_limit;
+	struct s_time			*time;
+	struct s_shared_locker	*shared_locker;
+}							t_table;
 
-typedef struct s_semaphores
+typedef struct s_shared_locker
 {
 	sem_t	*print;
 	sem_t	*forks;
 	sem_t	*death;
 	sem_t	*full;
 	sem_t	*stop;
-}					t_semaphores;
+}			t_shared_locker;
 
-typedef struct s_locker
+typedef struct s_philo_locker
 {
-	pthread_mutex_t	meals_limit_flag;
-	pthread_mutex_t	death_flag;
-	pthread_mutex_t	last_meal_flag;
-	pthread_mutex_t	meals_eaten_flag;
-}					t_locker;
+	sem_t	*dinner_state_flag;
+	sem_t	*meals_flag;
+}			t_philo_locker;
 
 typedef struct s_philo
 {
-	int				id;
-	int				state;
-	int				meals_eaten;
-	size_t			last_meal_eaten;
-	int				is_dead;
-	int				is_full;
-	pthread_t		philosopher_supervisor;
-	pthread_t		stop_dinner_supervisor;
-	struct s_table	*table;
-	struct s_time	*time;
-	struct s_locker	*locker;
-}					t_philo;
+	int						id;
+	int						state;
+	int						meals_eaten;
+	size_t					last_meal_eaten;
+	int						is_dead;
+	int						is_full;
+	pthread_t				philosopher_supervisor;
+	pthread_t				stop_dinner_supervisor;
+	struct s_table			*table;
+	struct s_time			*time;
+	struct s_philo_locker	*philo_locker;
+}							t_philo;
 
 // philo.c
 
-int			prep_philosophers_dinner(int argc, char **argv);
-void		run_philosophers_dinner(t_table *table, int *status);
-void		wait_the_end_of_philosophers_dinner(t_table *table, int *status);
+void			prep_philosophers_dinner(int argc, char **argv);
+void			run_philosophers_dinner(t_table *table,
+					t_philosopher_parent *philosopher_parent, t_philo *philosopher);
+// void		wait_the_end_of_philosophers_dinner(t_table *table, int *status);
 
 // check_arg_input.c
 
-int			arg_is_not_valid(int argc, char **argv);
-int			arg_number_is_wrong(int argc);
-int			arg_format_is_not_digit(int argc, char **argv);
-int			arg_format_is_greater_than_int_max(int argc, char **argv);
-int			arg_format_is_equal_to_zero(int argc, char **argv);
+int				arg_is_not_valid(int argc, char **argv);
+int				arg_number_is_wrong(int argc);
+int				arg_format_is_not_digit(int argc, char **argv);
+int				arg_format_is_greater_than_int_max(int argc, char **argv);
+int				arg_format_is_equal_to_zero(int argc, char **argv);
 
 // init_lst.c
 
-// init_philo_lst.c
+t_table			*init_table(int argc, char **argv);
+t_time			*init_time(char **argv);
+t_shared_locker	*init_shared_locker(int nbr_philo);
+int				semaphore_failed(sem_t *sem, char *msg);
 
+// init_philo_lst.c
 
 // time.c
 
-size_t		ms_actual_time(void);
-size_t		ms_timestamp(size_t start);
-size_t		ms_time(struct timeval *time);
-size_t		ms_time_diff(size_t time);
-void		ms_sleep(int ms);
+size_t			ms_actual_time(void);
+size_t			ms_timestamp(size_t start);
+size_t			ms_time(struct timeval *time);
+size_t			ms_time_diff(size_t time);
+void			ms_sleep(int ms);
 
 // cleaning.c
 
+void			*clean_table(t_table *table);
+void			*clean_shared_locker(t_shared_locker *shared_locker, int nbr_locker);
+
 // verbose.c
 
-void	    print_argument_definition(int arg);
+void			print_argument_definition(int arg);
 
 // libft_utils.c
 
-int			ft_atoi(const char *str);
-long		ft_atoi_long(const char *str);
-int			ft_isdigit(int c);
+int				ft_atoi(const char *str);
+long			ft_atoi_long(const char *str);
+int				ft_isdigit(int c);
 
 // test.c
-
 
 #endif

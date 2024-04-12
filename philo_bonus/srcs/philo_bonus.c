@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 12:34:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/10 21:39:21 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/12 17:17:52 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,47 @@ int	main(int argc, char **argv)
 {
 	if (arg_is_not_valid(argc, argv))
 		return (EXIT_FAILURE);
-	return (prep_philosophers_dinner(argc, argv));
-}
-
-int	prep_philosophers_dinner(int argc, char **argv)
-{
-	(void)argv;
-	(void)argc;
-	printf("let's prep the philosophers dinner\n");
+	prep_philosophers_dinner(argc, argv);
 	return (EXIT_SUCCESS);
 }
 
-// void	run_philosophers_dinner(t_table *table, int *status)
-// {
-// 	if (table->nbr_philo == 1)
-// 		start_routine_alone(table, status);
-// 	else
-// 		start_routine_together(table, status);
-// 	start_supervisor(table, status);
-// 	wait_the_end_of_philosophers_dinner(table, status);
-// 	wait_the_end_of_supervisor(table, status);
-// 	clean_table(table, status);
-// }
+void	prep_philosophers_dinner(int argc, char **argv)
+{
+	t_philosopher_parent	*philosopher_parent;
+	t_table					*table;
+	t_philo					*philosopher;
+
+	(void)philosopher_parent;
+	(void)philosopher;
+	table = init_table(argc, argv);
+	if (!table)
+		exit(EXIT_FAILURE);
+	// philosopher_parent = init_philosopher_parent(table);
+	// if (!philosopher_parent)
+	// {
+	// 	clean_table(table);
+	// 	exit(EXIT_FAILURE);
+	// }
+	// philosopher = init_philosopher(table);
+	// if (!philosopher)
+	// {
+	// 	clean_table(table);
+	// 	clean_philosopher_parent(philosopher_parent);
+	// 	exit(EXIT_FAILURE);
+	// }
+	printf("table is initialized\n");
+	clean_table(table);
+	// run_philosophers_dinner(table, philosopher_parent, philosopher);
+}
+
+void	run_philosophers_dinner(t_table *table,
+			t_philosopher_parent *philosopher_parent, t_philo *philosopher)
+{
+	(void)table;
+	(void)philosopher_parent;
+	(void)philosopher;
+	printf("let's run the philosophers dinner\n");
+}
 
 // void	wait_the_end_of_philosophers_dinner(t_table *table, int *status)
 // {

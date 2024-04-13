@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 12:34:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/12 17:17:52 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/13 11:32:31 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,38 +22,45 @@ int	main(int argc, char **argv)
 
 void	prep_philosophers_dinner(int argc, char **argv)
 {
-	t_philosopher_parent	*philosopher_parent;
-	t_table					*table;
-	t_philo					*philosopher;
+	t_parent	*parent;
+	t_table		*table;
+	t_philo		*philosopher;
+	int			i;
 
-	(void)philosopher_parent;
 	(void)philosopher;
 	table = init_table(argc, argv);
 	if (!table)
 		exit(EXIT_FAILURE);
-	// philosopher_parent = init_philosopher_parent(table);
-	// if (!philosopher_parent)
-	// {
-	// 	clean_table(table);
-	// 	exit(EXIT_FAILURE);
-	// }
+	parent = init_parent(table);
+	if (!parent)
+	{
+		clean_table(table);
+		exit(EXIT_FAILURE);
+	}
 	// philosopher = init_philosopher(table);
 	// if (!philosopher)
 	// {
 	// 	clean_table(table);
-	// 	clean_philosopher_parent(philosopher_parent);
+	// 	clean_parent(philosopher_parent);
 	// 	exit(EXIT_FAILURE);
 	// }
 	printf("table is initialized\n");
+	i = 0;
+	while (i < table->nbr_philo)
+	{
+		printf("philo_pid: %u\n", parent->philosopher_pid[i]);
+		i++;
+	}
 	clean_table(table);
-	// run_philosophers_dinner(table, philosopher_parent, philosopher);
+	clean_parent(parent);
+	// run_philosophers_dinner(table, parent, philosopher);
 }
 
-void	run_philosophers_dinner(t_table *table,
-			t_philosopher_parent *philosopher_parent, t_philo *philosopher)
+void	run_philosophers_dinner(t_table *table, t_parent *parent,
+			t_philo *philosopher)
 {
 	(void)table;
-	(void)philosopher_parent;
+	(void)parent;
 	(void)philosopher;
 	printf("let's run the philosophers dinner\n");
 }

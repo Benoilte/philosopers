@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 13:37:11 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/12 17:14:48 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/13 11:28:29 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
 # include <limits.h>
 # include <pthread.h>
 # include <sys/time.h>
@@ -74,7 +75,7 @@ enum
 	PHILOSOPHER_IS_DEAD
 };
 
-typedef struct s_philosopher_parent
+typedef struct s_parent
 {
 	int				nbr_philosophers_full;
 	int				is_one_philosopher_die;
@@ -82,7 +83,7 @@ typedef struct s_philosopher_parent
 	pthread_t		meals_eaten_supervisor;
 	pid_t			*philosopher_pid;
 	struct s_table	*table;
-}					t_philosopher_parent;
+}					t_parent;
 
 typedef struct s_time
 {
@@ -133,8 +134,8 @@ typedef struct s_philo
 // philo.c
 
 void			prep_philosophers_dinner(int argc, char **argv);
-void			run_philosophers_dinner(t_table *table,
-					t_philosopher_parent *philosopher_parent, t_philo *philosopher);
+void			run_philosophers_dinner(t_table *table, t_parent *parent,
+					t_philo *philosopher);
 // void		wait_the_end_of_philosophers_dinner(t_table *table, int *status);
 
 // check_arg_input.c
@@ -151,8 +152,9 @@ t_table			*init_table(int argc, char **argv);
 t_time			*init_time(char **argv);
 t_shared_locker	*init_shared_locker(int nbr_philo);
 int				semaphore_failed(sem_t *sem, char *msg);
+t_parent		*init_parent(t_table *table);
 
-// init_philo_lst.c
+// init_lst_utils.c
 
 // time.c
 
@@ -165,11 +167,14 @@ void			ms_sleep(int ms);
 // cleaning.c
 
 void			*clean_table(t_table *table);
-void			*clean_shared_locker(t_shared_locker *shared_locker, int nbr_locker);
+void			*clean_shared_locker(t_shared_locker *shared_locker,
+					int nbr_locker);
+void			*clean_parent(t_parent *parent);
 
 // verbose.c
 
 void			print_argument_definition(int arg);
+void			unlink_semaphore(void);
 
 // libft_utils.c
 

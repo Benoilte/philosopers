@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 13:50:48 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/15 10:59:18 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/15 18:42:03 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	print_structure(t_table *table, t_parent *parent, t_philo *philo)
 	printf("\nDISPLAY DATA STRUCTURE\n");
 	print_table(table);
 	print_time(table->time);
-    print_parent(table, parent);
+	print_parent(table, parent);
 	print_philosophers(philo);
 }
 
@@ -42,8 +42,9 @@ void	print_parent(t_table *table, t_parent *parent)
 	int	i;
 
 	printf("\n\nDISPLAY PARENT\n");
-	printf("parent id: %d\n", parent->nbr_philosophers_full);
-	printf("parent state: %d\n", parent->is_one_philosopher_die);
+	printf("parent nbr philosophers full: %d\n", parent->nbr_philosophers_full);
+	printf("parent is one philosopher die: %d\n",
+		parent->is_one_philosopher_die);
 	i = 0;
 	while (i < table->nbr_philo)
 	{

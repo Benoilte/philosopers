@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 12:34:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/15 10:59:59 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/15 15:56:36 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ void	prep_philosophers_dinner(int argc, char **argv)
 	parent = init_parent(table);
 	if (!parent)
 	{
-		clean_table(table);
+		clean_table(table, NULL);
 		exit(EXIT_FAILURE);
 	}
 	philosopher = init_philosopher(table);
 	if (!philosopher)
 	{
-		clean_table(table);
-		clean_parent(parent);
+		clean_table(table, NULL);
+		clean_parent(parent, NULL);
 		exit(EXIT_FAILURE);
 	}
 	run_philosophers_dinner(table, parent, philosopher);
@@ -48,25 +48,51 @@ void	prep_philosophers_dinner(int argc, char **argv)
 void	run_philosophers_dinner(t_table *table, t_parent *parent,
 			t_philo *philosopher)
 {
-	print_structure(table, parent, philosopher);
-	clean_all(table, parent, philosopher);
+	int	status;
+
+	status = EXIT_SUCCESS;
+	create_philosopher(table, parent, philosopher);
+	if (parent->philosopher_pid[philosopher->id - 1] == -1)
+		set_stop_simulation(parent);
+	else if (parent->philosopher_pid[philosopher->id - 1] == 0)
+		start_philosopher_routine(table, parent, philosopher, &status);
+	else
+		start_parent_monitoring(parent, &status);
+	wait_the_end_of_philosophers_dinner(parent);
+	clean_all(table, parent, philosopher, &status);
+	exit(status);
 }
 
-// void	wait_the_end_of_philosophers_dinner(t_table *table, int *status)
-// {
-// 	t_philo	*philo;
-// 	int		i;
+void	create_philosopher(t_table *table, t_parent *parent,
+			t_philo *philosopher)
+{
+	int	i;
 
-// 	i = 1;
-// 	philo = table->first_philo;
-// 	while (i <= table->nbr_philo)
-// 	{
-// 		if (pthread_join(philo->thread, NULL) != 0)
-// 		{
-// 			printf("Error: Failed to join philosopher %d thread\n", philo->id);
-// 			*status = EXIT_FAILURE;
-// 		}
-// 		philo = philo->next;
-// 		i++;
-// 	}
-// }
+	i = 0;
+	philosopher->time->start_time = ms_actual_time();
+	philosopher->last_meal_eaten = ms_actual_time();
+	while (i < table->nbr_philo)
+	{
+		parent->philosopher_pid[i] = fork();
+		if (parent->philosopher_pid[i] == 0)
+		{
+			philosopher->id = i + 1;
+			philosopher->state = (i + 1) % 2;
+			break ;
+		}
+		i++;
+	}
+}
+
+void	wait_the_end_of_philosophers_dinner(t_parent *parent)
+{
+	int		i;
+
+	i = 0;
+	while (i < parent->table->nbr_philo)
+	{
+		if (parent->philosopher_pid[i] != 0)
+			waitpid(parent->philosopher_pid[i], NULL, 0);
+		i++;
+	}
+}

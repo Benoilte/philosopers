@@ -6,7 +6,7 @@
 #    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 11:59:35 by bebrandt          #+#    #+#              #
-#    Updated: 2024/04/15 10:22:45 by bebrandt         ###   ########.fr        #
+#    Updated: 2024/04/15 17:44:53 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,13 @@ NAME			=	philo_bonus
 SRCS_DIR		=	srcs/
 
 SRCS			=	$(addsuffix .c, philo_bonus check_arg_input verbose libft_utils \
+									philosopher_routine perform_philosopher_action \
+									perform_philosopher_action_utils \
+									perform_philo_supervisor_action \
+									perform_parent_action \
+									read_philosopher_variable \
+									update_philosopher_variable \
+									update_philosopher_variable_utils\
 									init_lst init_lst_utils time \
 									cleaning cleaning_utils test)
 

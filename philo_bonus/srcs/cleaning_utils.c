@@ -6,40 +6,43 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:52:21 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/15 10:02:39 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:27:56 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers_bonus.h"
 
-void	*clean_shared_locker(t_shared_locker *shared_locker, int nbr_locker)
+void	*clean_shared_locker(t_shared_locker *shared_locker, int nbr_locker,
+			int *status)
 {
 	if (shared_locker)
 	{
 		if (nbr_locker >= 1)
-			sem_close(shared_locker->print);
+			close_semaphore(shared_locker->print, PRINT, status);
 		if (nbr_locker >= 2)
-			sem_close(shared_locker->forks);
+			close_semaphore(shared_locker->forks, FORKS, status);
 		if (nbr_locker >= 3)
-			sem_close(shared_locker->death);
+			close_semaphore(shared_locker->death, DEATH, status);
 		if (nbr_locker >= 4)
-			sem_close(shared_locker->full);
+			close_semaphore(shared_locker->full, FULL, status);
 		if (nbr_locker >= 5)
-			sem_close(shared_locker->stop);
+			close_semaphore(shared_locker->stop, STOP, status);
 		unlink_semaphore();
 		free(shared_locker);
 	}
 	return (NULL);
 }
 
-void	*clean_philo_locker(t_philo_locker *philo_locker, int nbr_locker)
+void	*clean_philo_locker(t_philo_locker *philo_locker, int nbr_locker,
+			int *status)
 {
 	if (philo_locker)
 	{
 		if (nbr_locker >= 1)
-			sem_close(philo_locker->dinner_state_flag);
+			close_semaphore(philo_locker->philo_state_flag, PHILO_STATE,
+				status);
 		if (nbr_locker >= 2)
-			sem_close(philo_locker->meals_flag);
+			close_semaphore(philo_locker->meals_flag, MEALS, status);
 		unlink_semaphore();
 		free(philo_locker);
 	}
@@ -53,4 +56,17 @@ void	unlink_semaphore(void)
 	sem_unlink(DEATH);
 	sem_unlink(FULL);
 	sem_unlink(STOP);
+	sem_unlink(PHILO_STATE);
+	sem_unlink(MEALS);
+	sem_unlink(READ_AND_UPDATE);
+}
+
+void	close_semaphore(sem_t *sem, char *msg, int *status)
+{
+	if (sem_close(sem))
+	{
+		printf("Error: sem_close() FAILED to close %smsg\n", msg);
+		if (status)
+			*status = EXIT_FAILURE;
+	}
 }

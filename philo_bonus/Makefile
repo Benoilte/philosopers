@@ -6,7 +6,7 @@
 #    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 11:59:35 by bebrandt          #+#    #+#              #
-#    Updated: 2024/04/13 11:16:07 by bebrandt         ###   ########.fr        #
+#    Updated: 2024/04/15 10:22:45 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRCS_DIR		=	srcs/
 
 SRCS			=	$(addsuffix .c, philo_bonus check_arg_input verbose libft_utils \
 									init_lst init_lst_utils time \
-									cleaning test)
+									cleaning cleaning_utils test)
 
 OBJ_DIR			=	objs/
 

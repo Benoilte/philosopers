@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 13:37:11 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/13 11:28:29 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/15 10:57:45 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 # define DEATH "/death"
 # define FULL "/full"
 # define STOP "/stop"
+
+# define DINNER_STATE "/dinner_state"
+# define MEALS "/meals"
 
 enum
 {
@@ -150,11 +153,14 @@ int				arg_format_is_equal_to_zero(int argc, char **argv);
 
 t_table			*init_table(int argc, char **argv);
 t_time			*init_time(char **argv);
-t_shared_locker	*init_shared_locker(int nbr_philo);
-int				semaphore_failed(sem_t *sem, char *msg);
 t_parent		*init_parent(t_table *table);
+t_philo			*init_philosopher(t_table *table);
 
 // init_lst_utils.c
+
+t_shared_locker	*init_shared_locker(int nbr_philo);
+t_philo_locker	*init_philo_locker(void);
+int				semaphore_failed(sem_t *sem, char *msg);
 
 // time.c
 
@@ -166,15 +172,22 @@ void			ms_sleep(int ms);
 
 // cleaning.c
 
+void			*clean_all(t_table *table, t_parent *parent, t_philo *philo);
 void			*clean_table(t_table *table);
+void			*clean_parent(t_parent *parent);
+void			*clean_philo(t_philo *philo);
+
+// cleaning_utils.c
+
 void			*clean_shared_locker(t_shared_locker *shared_locker,
 					int nbr_locker);
-void			*clean_parent(t_parent *parent);
+void			*clean_philo_locker(t_philo_locker *philo_locker,
+					int nbr_locker);
+void			unlink_semaphore(void);
 
 // verbose.c
 
 void			print_argument_definition(int arg);
-void			unlink_semaphore(void);
 
 // libft_utils.c
 
@@ -183,5 +196,11 @@ long			ft_atoi_long(const char *str);
 int				ft_isdigit(int c);
 
 // test.c
+
+void			print_structure(t_table *table, t_parent *parent, t_philo *philo);
+void			print_table(t_table *table);
+void			print_time(t_time *time);
+void			print_parent(t_table *table, t_parent *parent);
+void			print_philosophers(t_philo *philosophers);
 
 #endif

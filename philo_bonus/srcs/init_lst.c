@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:05:56 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/13 11:26:58 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/15 11:03:43 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,43 +45,8 @@ t_time	*init_time(char **argv)
 	time->time_to_die = ft_atoi(argv[TIME_TO_DIE]);
 	time->time_to_eat = ft_atoi(argv[TIME_TO_EAT]);
 	time->time_to_sleep = ft_atoi(argv[TIME_TO_SLEEP]);
-	time->start_time = 0;
+	time->start_time = ms_actual_time();
 	return (time);
-}
-
-t_shared_locker	*init_shared_locker(int nbr_philo)
-{
-	t_shared_locker	*shared_locker;
-
-	shared_locker = (t_shared_locker *)malloc(sizeof(t_shared_locker));
-	if (!shared_locker)
-		return (NULL);
-	shared_locker->print = sem_open(PRINT, O_CREAT, 0644, 1);
-	if (semaphore_failed(shared_locker->print, PRINT))
-		return (clean_shared_locker(shared_locker, 0));
-	shared_locker->forks = sem_open(FORKS, O_CREAT, 0644, nbr_philo);
-	if (semaphore_failed(shared_locker->forks, FORKS))
-		return (clean_shared_locker(shared_locker, 1));
-	shared_locker->death = sem_open(DEATH, O_CREAT, 0644, 0);
-	if (semaphore_failed(shared_locker->death, DEATH))
-		return (clean_shared_locker(shared_locker, 2));
-	shared_locker->full = sem_open(FULL, O_CREAT, 0644, 0);
-	if (semaphore_failed(shared_locker->full, FULL))
-		return (clean_shared_locker(shared_locker, 3));
-	shared_locker->stop = sem_open(STOP, O_CREAT, 0644, 0);
-	if (semaphore_failed(shared_locker->stop, STOP))
-		return (clean_shared_locker(shared_locker, 4));
-	return (shared_locker);
-}
-
-int	semaphore_failed(sem_t *sem, char *msg)
-{
-	if (sem == SEM_FAILED)
-	{
-		printf("Error: sem_open() FAILED to create %smsg\n", msg);
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
 }
 
 t_parent	*init_parent(t_table *table)
@@ -99,4 +64,25 @@ t_parent	*init_parent(t_table *table)
 	memset(parent->philosopher_pid, 0, table->nbr_philo * sizeof(pid_t));
 	parent->table = table;
 	return (parent);
+}
+
+t_philo	*init_philosopher(t_table *table)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)malloc(sizeof(t_philo));
+	if (!philo)
+		return (NULL);
+	philo->philo_locker = init_philo_locker();
+	if (!philo->philo_locker)
+		return (clean_philo(philo));
+	philo->id = 1;
+	philo->state = WANT_TO_SLEEP;
+	philo->meals_eaten = 0;
+	philo->last_meal_eaten = ms_actual_time();
+	philo->is_dead = NO;
+	philo->is_full = 0;
+	philo->table = table;
+	philo->time = table->time;
+	return (philo);
 }

@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 13:37:11 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/15 22:39:34 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/16 11:21:03 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # include <limits.h>
 # include <pthread.h>
 # include <sys/time.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <semaphore.h>
 # include <fcntl.h>
 
@@ -31,6 +31,7 @@
 # define FULL "/full"
 # define STOP "/stop"
 
+# define RUN_CONDITION "/run_condition"
 # define PHILO_STATE "/philo_state"
 # define MEALS "/meals"
 
@@ -127,8 +128,9 @@ typedef struct s_shared_locker
 
 typedef struct s_philo_locker
 {
-	sem_t	*philo_state_flag;
-	sem_t	*meals_flag;
+	sem_t	*run_condition;
+	sem_t	*state;
+	sem_t	*meals;
 }			t_philo_locker;
 
 typedef struct s_philo
@@ -222,12 +224,16 @@ int				philo_is_still_alive(t_philo *philo);
 int				philo_is_full(t_philo *philo);
 int				can_dinner_continue(t_philo *philo);
 
+// read_philosopher_variable_utils.c
+
+int				get_philo_state(t_philo *philo);
+
 // update_philosopher_variable.c
 
-void			modify_philo_state(t_philo *philo, int state);
+void			set_philo_state(t_philo *philo, int state);
 void			set_philosopher_dead(t_philo *philo);
 void			set_philosopher_full(t_philo *philo);
-void			update_philo_if_he_is_full(t_philo *philo);
+void			set_philo_if_he_is_full(t_philo *philo);
 void			set_dinner_as_finished(t_philo *philo);
 
 // update_philosopher_variable_utils.c

@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:41:09 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/15 18:35:57 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/16 10:05:34 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ int	dinner_is_not_finished(t_philo *philo)
 void	take_forks(t_philo *philo)
 {
 	sem_wait(philo->table->shared_locker->forks);
-	modify_philo_state(philo, TAKE_FORKS);
+	set_philo_state(philo, TAKE_FORKS);
 	print_philo_status(philo);
 	sem_wait(philo->table->shared_locker->forks);
-	modify_philo_state(philo, TAKE_FORKS);
+	set_philo_state(philo, TAKE_FORKS);
 	print_philo_status(philo);
-	modify_philo_state(philo, READY_TO_EAT);
+	set_philo_state(philo, READY_TO_EAT);
 }
 
 void	return_forks(t_philo *philo)

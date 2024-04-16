@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 13:37:11 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/15 18:36:03 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/15 22:39:34 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <limits.h>
 # include <pthread.h>
 # include <sys/time.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 # include <semaphore.h>
 # include <fcntl.h>
 

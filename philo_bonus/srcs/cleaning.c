@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 13:48:45 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/15 14:44:04 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/16 12:55:20 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	*clean_philo(t_philo *philo, int *status)
 	if (philo)
 	{
 		if (philo->philo_locker)
-			clean_philo_locker(philo->philo_locker, 2, status);
+			clean_philo_locker(philo->philo_locker, 3, status);
 		philo->time = NULL;
 		philo->table = NULL;
 		free(philo);

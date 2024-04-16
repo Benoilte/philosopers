@@ -6,7 +6,7 @@
 #    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 11:59:35 by bebrandt          #+#    #+#              #
-#    Updated: 2024/04/16 11:53:20 by bebrandt         ###   ########.fr        #
+#    Updated: 2024/04/16 14:52:37 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,11 +32,6 @@ OBJ 			=	$(SRCS:.c=.o)
 
 OBJS 			=	$(addprefix $(OBJ_DIR),$(OBJ))
 
-SEM_NAME		=	unlink_semaphore
-SEM_SRCS		=	$(addsuffix .c, unlink)
-SEM_OBJ 		= 	$(SEM_SRCS:.c=.o)
-SEM_OBJS 		= 	$(addprefix $(OBJ_DIR),$(SEM_OBJ))
-
 HDRS			=	-Iincludes/.
 
 CC				=	gcc $(HDRS)
@@ -50,13 +45,7 @@ NONE			=	\033[0m
 
 all: $(NAME)
 
-sem: $(SEM_NAME)
-
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) -o $@ $^
-	@echo "$(GREEN)##### " $@ "Program is created #####$(NONE)"
-
-$(SEM_NAME): $(SEM_OBJS)
 	@$(CC) $(CFLAGS) -o $@ $^
 	@echo "$(GREEN)##### " $@ "Program is created #####$(NONE)"
 
@@ -77,4 +66,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re sem
+.PHONY: all clean fclean re

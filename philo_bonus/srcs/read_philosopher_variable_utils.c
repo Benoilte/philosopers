@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   update_philosopher_variable_utils.c                :+:      :+:    :+:   */
+/*   read_philosopher_variable_utils.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/15 17:34:23 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/16 09:59:56 by bebrandt         ###   ########.fr       */
+/*   Created: 2024/04/16 10:08:19 by bebrandt          #+#    #+#             */
+/*   Updated: 2024/04/16 11:20:34 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers_bonus.h"
 
-void	reset_last_meal_eaten(t_philo *philo)
+int	get_philo_state(t_philo *philo)
 {
-	sem_wait(philo->philo_locker->meals);
-	philo->last_meal_eaten = ms_actual_time();
-	sem_post(philo->philo_locker->meals);
-}
+	int	state;
 
-void	add_meals_eaten(t_philo *philo)
-{
-	sem_wait(philo->philo_locker->meals);
-	philo->meals_eaten += 1;
-	sem_post(philo->philo_locker->meals);
+	sem_wait(philo->philo_locker->state);
+	state = philo->state;
+	sem_post(philo->philo_locker->state);
+	return (state);
 }

@@ -6,7 +6,7 @@
 #    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 11:59:35 by bebrandt          #+#    #+#              #
-#    Updated: 2024/04/15 17:44:53 by bebrandt         ###   ########.fr        #
+#    Updated: 2024/04/16 11:53:20 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRCS			=	$(addsuffix .c, philo_bonus check_arg_input verbose libft_utils \
 									perform_philo_supervisor_action \
 									perform_parent_action \
 									read_philosopher_variable \
+									read_philosopher_variable_utils \
 									update_philosopher_variable \
 									update_philosopher_variable_utils\
 									init_lst init_lst_utils time \
@@ -40,8 +41,7 @@ HDRS			=	-Iincludes/.
 
 CC				=	gcc $(HDRS)
 
-CFLAGS			=	-Wall -Wextra -Werror -pthread -g
-
+CFLAGS			=	-Wall -Wextra -Werror -pthread
 RM				=	rm -f
 
 RED				=	\033[0;31m

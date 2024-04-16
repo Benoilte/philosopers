@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 11:35:17 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/15 18:34:59 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/16 11:21:42 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	start_philosopher_routine(t_table *table, t_parent *parent,
 
 void	start_routine_alone(t_philo *philo)
 {
-	philo->state = TAKE_FORKS;
+	set_philo_state(philo, TAKE_FORKS);
 	print_philo_status(philo);
 	ms_sleep(philo->time->time_to_die);
 	philo_die(philo);
@@ -37,13 +37,13 @@ void	start_routine(t_philo *philo, int *status)
 		return ;
 	while (dinner_is_not_finished(philo))
 	{
-		if (philo->state == WANT_TO_EAT)
+		if (get_philo_state(philo) == WANT_TO_EAT)
 			take_forks(philo);
-		if (philo->state == READY_TO_EAT)
+		if (get_philo_state(philo) == READY_TO_EAT)
 			philo_eat(philo);
-		if (philo->state == WANT_TO_SLEEP)
+		if (get_philo_state(philo) == WANT_TO_SLEEP)
 			philo_sleep(philo);
-		if (philo->state == WANT_TO_THINK)
+		if (get_philo_state(philo) == WANT_TO_THINK)
 			philo_think(philo);
 	}
 	wait_end_of_philo_supervisor(philo, status);

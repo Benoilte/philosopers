@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 17:26:00 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/15 16:07:12 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/16 09:57:23 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,15 @@ t_philo_locker	*init_philo_locker(void)
 	philo_locker = (t_philo_locker *)malloc(sizeof(t_philo_locker));
 	if (!philo_locker)
 		return (NULL);
-	philo_locker->philo_state_flag = sem_open(PHILO_STATE, O_CREAT, 0644, 1);
-	if (init_semaphore_failed(philo_locker->philo_state_flag, PHILO_STATE))
+	philo_locker->run_condition = sem_open(RUN_CONDITION, O_CREAT, 0644, 1);
+	if (init_semaphore_failed(philo_locker->run_condition, RUN_CONDITION))
 		return (clean_philo_locker(philo_locker, 0, NULL));
-	philo_locker->meals_flag = sem_open(MEALS, O_CREAT, 0644, 1);
-	if (init_semaphore_failed(philo_locker->meals_flag, MEALS))
+	philo_locker->state = sem_open(PHILO_STATE, O_CREAT, 0644, 1);
+	if (init_semaphore_failed(philo_locker->state, PHILO_STATE))
 		return (clean_philo_locker(philo_locker, 1, NULL));
+	philo_locker->meals = sem_open(MEALS, O_CREAT, 0644, 1);
+	if (init_semaphore_failed(philo_locker->meals, MEALS))
+		return (clean_philo_locker(philo_locker, 2, NULL));
 	return (philo_locker);
 }
 

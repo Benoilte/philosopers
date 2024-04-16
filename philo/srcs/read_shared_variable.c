@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 20:24:04 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/09 00:34:14 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/16 09:33:56 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,14 @@ size_t	read_last_meals_eaten(t_philo *philo)
 	last_meals_eaten = philo->last_meal_eaten;
 	pthread_mutex_unlock(&(philo->meals));
 	return (last_meals_eaten);
+}
+
+int	read_state(t_philo *philo)
+{
+	int	state;
+
+	pthread_mutex_lock(&(philo->lock_state));
+	state = philo->state;
+	pthread_mutex_unlock(&(philo->lock_state));
+	return (state);
 }

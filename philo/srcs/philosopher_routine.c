@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 18:00:38 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/10 11:29:03 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/16 09:35:10 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	while (dinner_is_not_finished(philo))
 	{
-		if (philo->state == WANT_TO_EAT)
+		if (read_state(philo) == WANT_TO_EAT)
 			take_forks(philo);
-		if (philo->state == READY_TO_EAT)
+		if (read_state(philo) == READY_TO_EAT)
 			philo_eat(philo);
-		if (philo->state == WANT_TO_SLEEP)
+		if (read_state(philo) == WANT_TO_SLEEP)
 			philo_sleep(philo);
-		if (philo->state == WANT_TO_THINK)
+		if (read_state(philo) == WANT_TO_THINK)
 			philo_think(philo);
 	}
 	return (NULL);

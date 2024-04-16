@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 08:47:13 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/10 11:24:42 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/16 09:36:15 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ void	print_argument_definition(int arg)
 
 void	print_philo_status(t_philo *philo)
 {
-	if (philo->state == TAKE_FORKS)
+	if (read_state(philo) == TAKE_FORKS)
 		print_log(philo, "has taken a fork");
-	else if (philo->state == EATING)
+	else if (read_state(philo) == EATING)
 		print_log(philo, "is eating");
-	else if (philo->state == SLEEPING)
+	else if (read_state(philo) == SLEEPING)
 		print_log(philo, "is sleeping");
-	else if (philo->state == THINKING)
+	else if (read_state(philo) == THINKING)
 		print_log(philo, "is thinking");
-	else if (philo->state == DEAD)
+	else if (read_state(philo) == DEAD)
 		print_dead_log(philo, "died");
 }
 

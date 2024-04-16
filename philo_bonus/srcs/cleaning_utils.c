@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 09:52:21 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/15 16:27:56 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/16 09:59:11 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,12 @@ void	*clean_philo_locker(t_philo_locker *philo_locker, int nbr_locker,
 	if (philo_locker)
 	{
 		if (nbr_locker >= 1)
-			close_semaphore(philo_locker->philo_state_flag, PHILO_STATE,
+			close_semaphore(philo_locker->run_condition, RUN_CONDITION,
 				status);
 		if (nbr_locker >= 2)
-			close_semaphore(philo_locker->meals_flag, MEALS, status);
+			close_semaphore(philo_locker->state, PHILO_STATE, status);
+		if (nbr_locker >= 3)
+			close_semaphore(philo_locker->meals, MEALS, status);
 		unlink_semaphore();
 		free(philo_locker);
 	}
@@ -56,6 +58,7 @@ void	unlink_semaphore(void)
 	sem_unlink(DEATH);
 	sem_unlink(FULL);
 	sem_unlink(STOP);
+	sem_unlink(RUN_CONDITION);
 	sem_unlink(PHILO_STATE);
 	sem_unlink(MEALS);
 	sem_unlink(READ_AND_UPDATE);

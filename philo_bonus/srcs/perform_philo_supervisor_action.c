@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:12:57 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/15 18:41:37 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/16 10:04:52 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*philosopher_monitoring(void *arg)
 		if (philo->table->meals_limit && philo_is_still_alive(philo)
 			&& (philo_is_full(philo) == NO))
 		{
-			update_philo_if_he_is_full(philo);
+			set_philo_if_he_is_full(philo);
 			if (philo_is_full(philo))
 				sem_post(philo->table->shared_locker->full);
 		}

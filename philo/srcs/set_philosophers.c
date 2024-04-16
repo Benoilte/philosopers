@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 11:59:43 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/10 11:16:20 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/16 09:37:44 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,7 @@ void	set_philosophers_dinner_start(t_table *table)
 
 void	modify_philo_state(t_philo *philo, int state)
 {
+	pthread_mutex_lock(&(philo->lock_state));
 	philo->state = state;
+	pthread_mutex_unlock(&(philo->lock_state));
 }

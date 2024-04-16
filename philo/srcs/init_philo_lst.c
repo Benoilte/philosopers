@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 17:26:00 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/09 11:13:43 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/16 09:30:05 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,19 +59,29 @@ int	philo_mutex_init(t_philo *philo, int id)
 {
 	if (pthread_mutex_init(&(philo->left_fork), NULL))
 	{
-		printf("Error: Failed to init left_fork mutex");
-		printf(" of philo %d\n", id);
+		print_error_to_init_philo_mutex("left_fork", id);
 		free(philo);
 		return (EXIT_FAILURE);
 	}
 	if (pthread_mutex_init(&(philo->meals), NULL))
 	{
-		printf("Error: Failed to init meals mutex");
-		printf(" of philo %d\n", id);
-		philo_mutex_destroy(&(philo->left_fork), philo->id,
-			"left_fork", NULL);
+		print_error_to_init_philo_mutex("meals", id);
+		philo_mutex_destroy(&(philo->left_fork), id, "left_fork", NULL);
+		free(philo);
+		return (EXIT_FAILURE);
+	}
+	if (pthread_mutex_init(&(philo->lock_state), NULL))
+	{
+		print_error_to_init_philo_mutex("lock_state", id);
+		philo_mutex_destroy(&(philo->left_fork), id, "left_fork", NULL);
+		philo_mutex_destroy(&(philo->meals), id, "meals", NULL);
 		free(philo);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
+}
+
+void	print_error_to_init_philo_mutex(char *msg, int id)
+{
+	printf("Error: Failed to init %s mutex of philo %d\n", msg, id);
 }

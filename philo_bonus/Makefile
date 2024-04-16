@@ -6,7 +6,7 @@
 #    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 11:59:35 by bebrandt          #+#    #+#              #
-#    Updated: 2024/04/15 17:44:53 by bebrandt         ###   ########.fr        #
+#    Updated: 2024/04/15 19:29:40 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ HDRS			=	-Iincludes/.
 
 CC				=	gcc $(HDRS)
 
-CFLAGS			=	-Wall -Wextra -Werror -pthread -g
+CFLAGS			=	-Wall -Wextra -Werror -pthread
 
 RM				=	rm -f
 

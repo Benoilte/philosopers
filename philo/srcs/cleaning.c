@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 10:16:28 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/09 11:50:50 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/16 09:30:40 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ void	clean_all_philosophers(t_philo **philosophers, int *status)
 			philo_to_free->id, "left_fork", status);
 		philo_mutex_destroy(&(philo_to_free->meals),
 			philo_to_free->id, "meals", status);
+		philo_mutex_destroy(&(philo_to_free->lock_state),
+			philo_to_free->id, "lock_state", status);
 		philo_to_free->time = NULL;
 		philo_to_free->table = NULL;
 		free(philo_to_free);

@@ -6,7 +6,7 @@
 /*   By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 10:31:15 by bebrandt          #+#    #+#             */
-/*   Updated: 2024/04/10 11:21:43 by bebrandt         ###   ########.fr       */
+/*   Updated: 2024/04/16 09:34:29 by bebrandt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_philo
 	size_t			last_meal_eaten;
 	pthread_t		thread;
 	pthread_mutex_t	meals;
+	pthread_mutex_t	lock_state;
 	pthread_mutex_t	left_fork;
 	pthread_mutex_t	*right_fork;
 	struct s_table	*table;
@@ -130,6 +131,7 @@ int			locker_mutex_init(t_locker *locker, pthread_mutex_t *mutex,
 t_philo		*init_all_philosophers(t_table *table);
 t_philo		*init_one_philosophers(t_table *table, int id);
 int			philo_mutex_init(t_philo *philo, int id);
+void		print_error_to_init_philo_mutex(char *msg, int id);
 
 // set_philosophers.c
 
@@ -178,6 +180,7 @@ int			read_dead_flag(t_table *table);
 int			read_meals_limit_reached(t_table *table);
 int			read_meals_eaten(t_philo *philo);
 size_t		read_last_meals_eaten(t_philo *philo);
+int			read_state(t_philo *philo);
 
 // time.c
 

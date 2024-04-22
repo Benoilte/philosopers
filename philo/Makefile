@@ -6,7 +6,7 @@
 #    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 11:59:35 by bebrandt          #+#    #+#              #
-#    Updated: 2024/04/16 11:53:28 by bebrandt         ###   ########.fr        #
+#    Updated: 2024/04/22 08:34:44 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,21 @@ NAME			=	philo
 
 SRCS_DIR		=	srcs/
 
-SRCS			=	$(addsuffix .c, philo check_arg_input verbose libft_utils \
-									init_lst init_philo_lst set_philosophers \
-									supervisor_action philosopher_routine time \
+SRCS			=	$(addsuffix .c, philo \
+									init_lst \
+									init_philo_lst \
+									check_arg_input \
+									set_philosophers \
+									supervisor_action \
+									philosopher_routine \
+									verbose libft_utils \
 									manage_philosophers_forks \
 									perform_philosophers_action\
-									modify_shared_variable read_shared_variable \
-									cleaning test)
+									modify_shared_variable \
+									read_shared_variable \
+									time \
+									cleaning \
+									test)
 
 OBJ_DIR			=	objs/
 

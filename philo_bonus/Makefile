@@ -6,7 +6,7 @@
 #    By: bebrandt <benoit.brandt@proton.me>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/04 11:59:35 by bebrandt          #+#    #+#              #
-#    Updated: 2024/04/16 14:52:37 by bebrandt         ###   ########.fr        #
+#    Updated: 2024/04/22 08:39:09 by bebrandt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,17 +14,25 @@ NAME			=	philo_bonus
 
 SRCS_DIR		=	srcs/
 
-SRCS			=	$(addsuffix .c, philo_bonus check_arg_input verbose libft_utils \
-									philosopher_routine perform_philosopher_action \
+SRCS			=	$(addsuffix .c, philo_bonus \
+									libft_utils \
+									check_arg_input \
+									init_lst \
+									init_lst_utils \
+									philosopher_routine \
+									perform_philosopher_action \
 									perform_philosopher_action_utils \
 									perform_philo_supervisor_action \
 									perform_parent_action \
 									read_philosopher_variable \
 									read_philosopher_variable_utils \
 									update_philosopher_variable \
-									update_philosopher_variable_utils\
-									init_lst init_lst_utils time \
-									cleaning cleaning_utils test)
+									update_philosopher_variable_utils \
+									time \
+									cleaning \
+									cleaning_utils \
+									verbose \
+									test)
 
 OBJ_DIR			=	objs/
 
@@ -37,6 +45,7 @@ HDRS			=	-Iincludes/.
 CC				=	gcc $(HDRS)
 
 CFLAGS			=	-Wall -Wextra -Werror -pthread
+
 RM				=	rm -f
 
 RED				=	\033[0;31m
